@@ -1,29 +1,35 @@
-name: flyway
+
+name: 'Flyway Github Actions'
+ 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+    paths:
+      - flyway/**
+      
+env:
+  SQLFLUFF_DIALECT: sqlserver
+  DOCKER_IMAGE: redgate/flyway
+  SCHEMAS: public
+
+
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: flyway
-    env:
-      FLYWAY_USER: ${{secrets.DB_USERNAME}}
-      FLYWAY_PASSWORD: ${{secrets.DB_PASSWORD}}
-      FLYWAY_URL: ${{secrets.DB_URL}}
-    
+
+  Continuous-Integration-Build:
+    name: Continuous Integration Build
+    runs-on: ubuntu-20.04
+ 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-
-      - name: Setup Flyway CLI
-        run: |
-          sudo apt update
-          sudo apt install -y default-jre
-          wget -qO- https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/10.7.2/flyway-commandline-10.7.2-linux-x64.tar.gz | tar xvz
-          sudo ln -s $(pwd)/flyway-10.7.2/flyway /usr/local/bin/flyway
-
-      - name: Flyway Migrate 
-        run: flyway migrate 
+      - name: Checkout
+        uses: actions/checkout@v3.0.0
+               
+      - name: Continuous Integration Flyway Clean Migrate
+        run: >-
+          docker run --rm
+          --volume ${{ github.workspace }}/Flyway/migrations:/flyway/sql:ro
+          "${{ env.DOCKER_IMAGE }}"
+          -url="${{ secrets.DB_URL }}"
+          -user="${{ secrets.DB_USERNAME }}"
+          -password="${{ secrets.DB_PASSWORD }}"
+          info migrate
