@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - flyway/migrations
+      - flyway
       
 env:
   SQLFLUFF_DIALECT: sqlserver
