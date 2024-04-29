@@ -1,0 +1,13 @@
+{
+  "configurations": [
+    {
+      "type": "node",
+      "runtimeVersion": "20",
+      "request": "launch",
+      "envFile": "${workspaceFolder}/.env",
+      "name": "Server",
+      "skipFiles": ["**/node_modules/**"],
+      "program": "${workspaceFolder}/src/index.js"
+    }
+  ]
+}
