@@ -1,4 +1,4 @@
-import { setStyling, setTemplate } from "../../core/loader/resource-loader.js";
+import { setStyling } from "../../core/loader/resource-loader.js";
 
 class HomePage extends HTMLElement {
   constructor() {
