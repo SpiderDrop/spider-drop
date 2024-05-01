@@ -1,13 +1,14 @@
-let templateImports = ["./pages/home-page/home-page.html"];
+let templateImports = [
+  "./pages/home-page/home-page.html",
+  "./pages/about-page/about-page.html",
+  "./pages/not-found-page/not-found-page.html"
+];
 
 let scriptImports = [
-  // CDN Imports
-  "https://unpkg.com/@generic-components/components@latest/spinner.js",
-
   // Component Imports
 
   // Page Imports
-  "./pages/home-page/home-page.js"
+  "./pages/index.js"
 ];
 
 function addImports() {
