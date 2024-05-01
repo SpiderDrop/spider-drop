@@ -1,10 +1,25 @@
-import { match } from "../util.js";
+import { match } from "./util.js";
 
 export default class Router extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  attributeChangedCallback(property, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this[property] = newValue;
+  }
+
   connectedCallback() {
     this.updateLinks();
     this.navigate(window.location.pathname);
+
+    window.addEventListener("popstate", this._handlePopState);
   }
+
+  _handlePopState = () => {
+    this.navigate(window.location.pathname);
+  };
 
   navigate(url) {
     const matchedRoute = match(this.routes, url);
@@ -27,6 +42,7 @@ export default class Router extends HTMLElement {
       }
 
       const view = document.createElement(component);
+
       document.title = title || document.title;
 
       for (let key in params) {
@@ -46,6 +62,14 @@ export default class Router extends HTMLElement {
         this.navigate(target);
       };
     });
+  }
+
+  _handlePopState = () => {
+    this.navigate(window.location.pathname);
+  };
+
+  disconnectedCallback() {
+    window.removeEventListener("popstate", this._handlePopState);
   }
 
   get routes() {

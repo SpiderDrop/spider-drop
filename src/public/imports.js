@@ -5,9 +5,6 @@ let templateImports = [
 ];
 
 let scriptImports = [
-  // CDN Imports
-  "https://unpkg.com/@generic-components/components@latest/spinner.js",
-
   // Component Imports
 
   // Page Imports
