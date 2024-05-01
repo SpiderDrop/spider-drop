@@ -1,4 +1,12 @@
-let imports = ["./pages/home-page/home-page.js"];
+let imports = [
+  // CDN Imports
+  "https://unpkg.com/@generic-components/components@latest/spinner.js",
+
+  // Component Imports
+
+  // Page Imports
+  "./pages/home-page/home-page.js"
+];
 
 function addImports() {
   for (let importUrl of imports) {
