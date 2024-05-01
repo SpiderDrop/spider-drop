@@ -1,4 +1,8 @@
-let templateImports = ["./pages/home-page/home-page.html"];
+let templateImports = [
+  "./pages/home-page/home-page.html",
+  "./pages/about-page/about-page.html",
+  "./pages/not-found-page/not-found-page.html"
+];
 
 let scriptImports = [
   // CDN Imports
@@ -7,7 +11,7 @@ let scriptImports = [
   // Component Imports
 
   // Page Imports
-  "./pages/home-page/home-page.js"
+  "./pages/index.js"
 ];
 
 function addImports() {
