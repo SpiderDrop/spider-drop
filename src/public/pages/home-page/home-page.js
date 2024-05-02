@@ -9,7 +9,7 @@ export default class HomePage extends HTMLElement {
   }
 
   navigateToAboutPage() {
-    location.assign("/about");
+    location.assign("/my-spiders");
   }
 
   connectedCallback() {
