@@ -49,7 +49,15 @@ export default class Router extends HTMLElement {
         if (key !== "*") view.setAttribute(key, params[key]);
       }
 
-      this.outlet.appendChild(view);
+      const templateUrl = `./pages/${component}/${component}.html`;
+      let template = document.createElement("template");
+      template.id = component;
+
+      fetch(templateUrl).then(response => response.text()).then(response => {
+        template.innerHTML = response;
+        this.outlet.appendChild(template);
+        this.outlet.appendChild(view);
+      });
     }
   }
 

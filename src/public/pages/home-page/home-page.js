@@ -1,11 +1,6 @@
-import { setStyling } from "../../core/loader/resource-loader.js";
-
 export default class HomePage extends HTMLElement {
   constructor() {
     super();
-    this.template = document
-      .getElementById("home-page")
-      .content.cloneNode(true);
   }
 
   attributeChangedCallback(property, oldValue, newValue) {
@@ -19,20 +14,17 @@ export default class HomePage extends HTMLElement {
 
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "closed" });
-
-    setStyling("./pages/home-page/home-page.css", shadow);
-    shadow.appendChild(this.template);
+    const template = document
+      .getElementById("home-page")
+      .content.cloneNode(true);
+    shadow.appendChild(template);
 
     shadow
       .getElementById("sign-in-button")
       .addEventListener("click", () => this.navigateToAboutPage());
   }
 
-  disconnectedCallback() {
-    this.template
-      .getElementById("sign-in-button")
-      .removeEventListener(() => this.navigateToAboutPage());
-  }
+  disconnectedCallback() {}
 }
 
 customElements.define("home-page", HomePage);
