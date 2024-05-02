@@ -1,4 +1,4 @@
-export default class HomePage extends HTMLElement {
+export default class SearchHeaderComponent extends HTMLElement {
   constructor() {
     super();
   }
@@ -8,23 +8,16 @@ export default class HomePage extends HTMLElement {
     this[property] = newValue;
   }
 
-  navigateToAboutPage() {
-    location.assign("/my-spiders");
-  }
-
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "closed" });
     const template = document
-      .getElementById("home-page")
+      .getElementById("search-header-component")
       .content.cloneNode(true);
     shadow.appendChild(template);
-
-    shadow
-      .getElementById("sign-in-button")
-      .addEventListener("click", () => this.navigateToAboutPage());
   }
 
   disconnectedCallback() {}
 }
 
-customElements.define("home-page", HomePage);
+customElements.define("search-header", SearchHeaderComponent);
+customElements.defineComponent("search-header-component");
