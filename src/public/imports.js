@@ -1,8 +1,12 @@
 let scriptImports = [
   // Component Imports
   "./components/index.js",
+
   // Page Imports
-  "./pages/index.js"
+  "./pages/index.js",
+
+  // Router
+  "./core/routing/router.js"
 ];
 
 function addImports() {

@@ -1,4 +1,4 @@
-import { match } from "./util.js";
+import { match } from "/core/routing/util.js";
 
 export default class Router extends HTMLElement {
   constructor() {
