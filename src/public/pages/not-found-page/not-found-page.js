@@ -1,5 +1,3 @@
-import { setStyling } from "../../core/loader/resource-loader.js";
-
 export default class NotFoundPage extends HTMLElement {
   constructor() {
     super();
@@ -13,9 +11,10 @@ export default class NotFoundPage extends HTMLElement {
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "closed" });
 
-    setStyling("./pages/not-found-page/not-found-page.css", shadow);
-    const template = document.getElementById("not-found-page");
-    shadow.innerHTML = template.innerHTML;
+    const template = document
+      .getElementById("not-found-page")
+      .content.cloneNode(true);
+    shadow.appendChild(template);
   }
 }
 

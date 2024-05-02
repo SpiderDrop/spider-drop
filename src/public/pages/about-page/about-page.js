@@ -1,5 +1,3 @@
-import { setStyling } from "../../core/loader/resource-loader.js";
-
 export default class AboutPage extends HTMLElement {
   constructor() {
     super();
@@ -13,9 +11,10 @@ export default class AboutPage extends HTMLElement {
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "closed" });
 
-    setStyling("./pages/about-page/about-page.css", shadow);
-    const template = document.getElementById("about-page");
-    shadow.innerHTML = template.innerHTML;
+    const template = document
+      .getElementById("about-page")
+      .content.cloneNode(true);
+    shadow.appendChild(template);
   }
 }
 
