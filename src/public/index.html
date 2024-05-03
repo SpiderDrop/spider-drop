@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spider Drop</title>
+    <link rel="stylesheet" href="./core/styling/page-setup.css">
+    <link rel="stylesheet" href="./core/styling/constants.css">
+    <script type="module" src="./imports.js"></script>
+    <!-- <script type="module" src="./core/routing/router.js"></script> -->
+  </head>
+  <body>
+    <wc-router>
+      <wc-route
+        path="/"
+        title="Home"
+        component="home-page">
+      </wc-route>
+      <wc-route
+        path="/about"
+        title="About us"
+        component="about-page">
+      </wc-route>
+      <wc-route
+        path="/my-spiders"
+        title="My Spiders"
+        component="my-spiders-page">
+      </wc-route>
+      <wc-route
+        path="*"
+        title="Not found"
+        component="not-found-page">
+      </wc-route>
+      <wc-outlet></wc-outlet>
+    </wc-router>
+  </body>
+</html>

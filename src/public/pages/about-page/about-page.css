@@ -1,5 +1,5 @@
 .background {
-    height: calc(100vh - 1rem);
+    height: 100vh;
     width: 100%;
     background-color: var(--blue-accent);
     display: flex;
@@ -8,7 +8,7 @@
     box-sizing: border-box;
 }
 
-.greeting-panel {
+.about-panel {
     background-color: var(--light-white);
     padding: 5rem 12rem;
     display: flex;
@@ -19,18 +19,4 @@
 .text-large {
     font-size: 5.25em;
     color: var(--primary-font-color);
-}
-
-.text-small {
-    font-size: 3.25em;
-    color: var(--primary-font-color);
-}
-
-.button-sign-in {
-    margin-top: 5.6875rem;
-    height: 6rem;
-    background-color: var(--blue-darker-accent);
-    font-size: 3rem;
-    color: var(--bright-white);
-    border-radius: 1.125rem;
 }
