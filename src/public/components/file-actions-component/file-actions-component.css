@@ -1,0 +1,5 @@
+.icons {
+    display: flex;
+    gap: 1.875rem;
+    justify-content: flex-end;
+}
