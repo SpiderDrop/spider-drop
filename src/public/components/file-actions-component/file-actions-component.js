@@ -38,9 +38,7 @@ export default class FileActionsComponent extends HTMLElement {
       folderNameInputElement.removeAttribute("hidden");
       folderContainerElement.classList.add("create-folder-container");
     } else {
-      if (folderNameInputElement.value !== "") {
-        this.onAddFolder();
-      }
+      this.onAddFolder();
       uploadFileElement.style.display = "inline";
       folderNameInputElement.setAttribute("hidden", true);
       folderContainerElement.classList.remove("create-folder-container");
@@ -77,7 +75,10 @@ export default class FileActionsComponent extends HTMLElement {
 
     const createFolderInputElement = shadow.getElementById("folder-input");
     createFolderInputElement.addEventListener("keydown", event => {
-      if (event.key === "Enter") this.onAddFolder();
+      if (event.key === "Enter") {
+        this.onAddFolder();
+        this.toggleDialog();
+      }
     });
   }
 
