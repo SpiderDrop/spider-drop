@@ -1,7 +1,18 @@
 <link rel="stylesheet"
     href="/components/file-actions-component/file-actions-component.css">
 
-<div class="icons">
-    <img id="upload-icon" src="./assets/icons/upload.png">
-    <img id="create-folder-icon" src="./assets/icons/create-folder.png">
+<div class="container">
+    <div class="title">My Spiders</div>
+    <div class="icons">
+        <img id="upload-icon" src="./assets/icons/upload.svg">
+        <input type="file" multiple="true" id="upload-file-dialog" hidden>
+        <div id="create-folder-container">
+            <input id="folder-input" type="text"
+                placeholder="Enter Folder Name" hidden>
+            <div class="background">
+                <img id="folder-icon"
+                    src="./assets/icons/create-folder.svg">
+            </div>
+        </div>
+    </div>
 </div>

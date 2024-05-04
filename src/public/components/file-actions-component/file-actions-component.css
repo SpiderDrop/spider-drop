@@ -1,5 +1,50 @@
+.container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
 .icons {
     display: flex;
     gap: 1.875rem;
-    justify-content: flex-end;
+
+    img { 
+        height: 2rem;
+        width: 2rem;
+    }
+}
+
+.create-folder-container {
+    display: flex;
+    border: 0.125rem solid var(--blue-darker-accent);
+    border-radius: 2rem;
+    background-color: var(--bright-white);
+
+    > * {
+        height: 2.3125rem;
+    }
+
+    .background {
+        background-color: var(--blue-darker-accent);
+        border-radius: 0 1.125rem 1.125rem 0;
+    }
+
+    input {
+        border: none;
+        outline: none;
+        border-radius: 1.125rem;
+        padding: 0;
+        margin-left: 1rem;
+        font-size: 1.125rem;
+    }
+
+    img {
+        filter: brightness(100);
+        width: 4.0625rem;
+    }
 }
