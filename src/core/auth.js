@@ -50,6 +50,7 @@ export async function auth(req, res, next) {
       ).getPublicKey();
 
       jwt.verify(bearerToken, publicKey);
+      res.locals.email = decodedToken.payload.email.toLowerCase();
       next();
     } catch (e) {
       if (

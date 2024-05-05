@@ -12,7 +12,7 @@ export default class Router extends HTMLElement {
 
   connectedCallback() {
     this.updateLinks();
-    this.navigate(window.location.pathname);
+    this.navigate(window.location.pathname + window.location.search);
 
     window.addEventListener("popstate", this._handlePopState);
   }

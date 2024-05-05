@@ -10,10 +10,10 @@ export async function requestAccessToken(accessCode) {
   });
 }
 
-export async function saveAccessToken(accessToken) {
+export function saveAccessToken(accessToken) {
   localStorage.setItem("ACCESS_TOKEN", accessToken);
 }
 
-export async function getAccessToken() {
+export function getAccessToken() {
   return localStorage.getItem("ACCESS_TOKEN");
 }
