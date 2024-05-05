@@ -1,0 +1,63 @@
+.side-bar {
+    position: relative; 
+    width: 20%;
+    height: 80vh;
+}
+
+.nav-bar a{
+    display: flex;
+    text-decoration: none;
+    font-family: "Roboto", sans-serif;
+    font-size: 1em;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--black);
+    padding: 0.5em 0.5em 0.5em 0em;
+    align-items: center;
+}
+
+.nav-bar a:hover {
+    color: var(--steel-blue);
+}
+
+.nav-icon{
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.nav-icon:hover{
+    fill: var(--steel-blue);
+}
+
+.user-info {
+    font-family: "Roboto", sans-serif;
+    font-size: 1.5em;
+    font-weight: 700;
+    font-style: normal;
+    padding-left: 10%;
+}
+
+.nav-bar {
+    padding-left: 10%;
+}
+
+.sign-out {
+    position: absolute; 
+    width: 100%; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    bottom: 0;
+}
+
+.sign-out-button {
+    width: 90%;
+    height: 3em;
+    background-color: var(--bright-white);
+    border: 0.2em solid var(--bright-pink);
+    border-radius: 1em;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.5em;
+    font-weight: 400;
+    font-style: normal;
+}
