@@ -55,7 +55,6 @@ export default class SpiderViewComponent extends HTMLElement {
       return a[heading] > b[heading] ? 1 : 0;
     });
 
-    console.log(this.entries);
     this.updateListDisplay();
   }
 
