@@ -1,7 +1,7 @@
 .side-bar {
     position: relative; 
-    width: 20%;
     height: 80vh;
+    margin-top: 2.5rem;
 }
 
 .nav-bar a{
