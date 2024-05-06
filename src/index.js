@@ -5,12 +5,14 @@ import { auth, authRouter } from "./core/auth.js";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { config } from "dotenv";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+config();
 
 app.use(express.json());
 
