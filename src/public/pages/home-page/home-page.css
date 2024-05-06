@@ -9,7 +9,7 @@
 }
 
 .greeting-panel {
-    background-color: var(--light-white);
+    background-color: white;
     padding: 5rem 12rem;
     display: flex;
     flex-direction: column;
