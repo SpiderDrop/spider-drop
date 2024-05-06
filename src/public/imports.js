@@ -1,3 +1,5 @@
+import { getConfig } from "./services/config-services.js";
+
 let scriptImports = [
   // Component Imports
   "./components/index.js",
@@ -29,4 +31,5 @@ function addImports() {
   }
 }
 
+getConfig(); // Load Config
 addImports();
