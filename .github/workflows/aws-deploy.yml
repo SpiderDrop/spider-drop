@@ -28,7 +28,7 @@ jobs:
 
       - name: Debug show secret value
         run: |
-          echo "Secret Value: ${{ steps.secrets.outputs.TAWANDATEST_TESTNAME }}"
+          echo "Secret Value: ${{ env.TAWANDATEST }}"
 
 
       - name: Package artifact
