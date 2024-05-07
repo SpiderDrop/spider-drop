@@ -2,6 +2,7 @@ export default class MySpidersPage extends HTMLElement {
   constructor() {
     super();
   }
+
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "closed" });
     const template = document

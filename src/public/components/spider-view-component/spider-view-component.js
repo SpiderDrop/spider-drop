@@ -1,42 +1,18 @@
+import { fetchCurrentDirectory } from "../../services/file-service.js";
 
 export default class SpiderViewComponent extends HTMLElement {
   constructor() {
     super();
-    this.entries = [
-      {
-        name: "My Folder 1",
-        modified: "Yesterday at 9:00PM",
-        size: "10 files",
-        sharing: "private"
-      },
-      {
-        name: "My Folder 2",
-        modified: "Yesterday at 7:20PM",
-        size: "2 files",
-        sharing: "private"
-      },
-      {
-        name: "My Folder 2",
-        modified: "Yesterday at 6:45PM",
-        size: "3 files",
-        sharing: "private"
-      },
-      {
-        name: "report.pdf",
-        modified: "Yesterday at 7:20PM",
-        size: "102kb",
-        sharing: "public"
-      },
-      {
-        name: "secrets.pdf",
-        modified: "Today at 5:30am",
-        size: "102kb",
-        sharing: "public"
-      }
-    ];
+    this.currentPath = "/";
+    this.entries = [];
   }
 
-  removeSortedByIcon() {
+  async loadCurrentView() {
+    const spiders = await fetchCurrentDirectory(this.currentPath);
+    console.log(spiders);
+  }
+
+removeSortedByIcon() {
     const sortedIcon = this.shadowRoot.getElementById("sorted-icon");
     if (sortedIcon) sortedIcon.remove();
   }
@@ -102,7 +78,7 @@ export default class SpiderViewComponent extends HTMLElement {
       });
     });
 
-    this.updateListDisplay();
+    this.loadCurrentView();
   }
 
   disconnectedCallback() {}
