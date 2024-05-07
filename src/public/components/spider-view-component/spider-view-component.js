@@ -9,7 +9,6 @@ export default class SpiderViewComponent extends HTMLElement {
 
   async loadCurrentView() {
     const spiders = await fetchCurrentDirectory(this.currentPath);
-    console.log(spiders);
   }
 
 removeSortedByIcon() {
