@@ -29,6 +29,10 @@ jobs:
       - name: Debug show secret value
         run: |
           echo "Secret Value: ${{ env.TAWANDATEST }}"
+        
+      - name: Create .env file and add DB_NAME
+        run: |
+          echo "DB_NAME=${{ env.TAWANDATEST }}" > .env
 
 
       - name: Package artifact
