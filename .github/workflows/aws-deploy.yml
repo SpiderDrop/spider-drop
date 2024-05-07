@@ -25,7 +25,6 @@ jobs:
         with:
           secret-ids: |
             TawandaTest
-          parse-json-secrets: true
 
       - name: Debug show secret value
         run: |
