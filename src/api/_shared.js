@@ -15,11 +15,12 @@ export async function mapSpiders(objects, prefix, recursive = false) {
       };
 
   return objects.filter(filter).map((object) => {
+    const pathUnits = object.Key.split("/");
     return {
       ...object,
       // TODO: Specify correct value bases on user setting.
       sharing: false,
-      path: object.Key.split("/")[2],
+      path: pathUnits.slice(2, pathUnits.length).join("/"),
       isBox: object.Key.endsWith("/"),
     };
   });
