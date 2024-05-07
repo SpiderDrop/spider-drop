@@ -2,6 +2,7 @@ import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
+  DeleteObjectCommand,
   ListObjectsV2Command,
 } from "@aws-sdk/client-s3";
 
@@ -13,19 +14,18 @@ const s3Client = new S3Client({
   },
 });
 
-const putObject = async (body, key) => {
+export const putObject = async (body, key) => {
   const params = {
     Body: body,
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: key,
-    ACL: "public-read",
   };
   const command = new PutObjectCommand(params);
   const response = await s3Client.send(command);
   return response;
 };
 
-const getObject = async (key) => {
+export const getObject = async (key) => {
   const params = {
     Key: key,
     Bucket: process.env.AWS_BUCKET_NAME,
@@ -35,7 +35,7 @@ const getObject = async (key) => {
   return response;
 };
 
-const listObjects = async (numbObjects) => {
+export const listObjects = async (numbObjects) => {
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     MaxKeys: numbObjects,
@@ -45,8 +45,12 @@ const listObjects = async (numbObjects) => {
   return response;
 };
 
-module.exports = {
-  putObject,
-  getObject,
-  listObjects,
+export const deleteObject = async (key) => {
+  const params = {
+    Key: key,
+    Bucket: process.env.AWS_BUCKET_NAME,
+  };
+  const command = new DeleteObjectCommand(params);
+  const response = await s3Client.send(command);
+  return response;
 };
