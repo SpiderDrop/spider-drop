@@ -3,8 +3,6 @@ export function getObjectKey(userEmail, suffix) {
 }
 
 export async function mapSpiders(objects, prefix, recursive = false) {
-  console.log(prefix);
-  console.log(objects);
   const filter = recursive
     ? (object) => object.Key.startsWith(prefix) && object.Key !== prefix
     : (object) => {

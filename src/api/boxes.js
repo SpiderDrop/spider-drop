@@ -8,8 +8,6 @@ const MAX_SPIDERS_PER_BOX = 1_000_000;
 boxesRouter.use(getKeyMiddleware);
 
 boxesRouter.get("/*", async (_req, res) => {
-  console.log(res.locals.key);
-
   const objects = (await listObjects(MAX_SPIDERS_PER_BOX)).Contents;
   const suffix = res.locals.key.length === 0 ? "/" : `/${res.locals.key}/`;
   const prefix = getObjectKey(res.locals.email, suffix);
