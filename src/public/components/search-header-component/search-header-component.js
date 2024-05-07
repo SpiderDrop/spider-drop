@@ -19,5 +19,5 @@ export default class SearchHeaderComponent extends HTMLElement {
   disconnectedCallback() {}
 }
 
+await customElements.defineComponent("search-header-component");
 customElements.define("search-header", SearchHeaderComponent);
-customElements.defineComponent("search-header-component");

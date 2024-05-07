@@ -1,3 +1,4 @@
+
 export default class SpiderViewComponent extends HTMLElement {
   constructor() {
     super();
@@ -107,5 +108,5 @@ export default class SpiderViewComponent extends HTMLElement {
   disconnectedCallback() {}
 }
 
+await customElements.defineComponent("spider-view-component");
 customElements.define("spider-view", SpiderViewComponent);
-customElements.defineComponent("spider-view-component");

@@ -1,7 +1,7 @@
 import {
   getAccessToken,
   requestAccessToken,
-  saveAccessToken,
+  saveAccessToken
 } from "../../services/auth-service.js";
 import { getConfig } from "../../services/config-services.js";
 
