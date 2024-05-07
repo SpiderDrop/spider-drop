@@ -3,7 +3,7 @@ name: Deploy Spider Drop
 on:
   push:
     branches:
-    - main
+    - secrets
 
 jobs:
     
@@ -14,9 +14,23 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_PRIVATE}}
       AWS_REGION: 'eu-west-1'
 
+  
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Get secrets
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2.0.1
+        with:
+          secret-ids: |
+            TawandaTest
+          parse-json-secrets: true
+
+      - name: Debug show secret value
+        run: |
+          echo ${{ env.TawandaTest }}
+
 
       - name: Package artifact
         run: zip -r site.zip *
