@@ -1,7 +1,8 @@
 import { Router } from "express";
+import { spidersRouter } from "./spiders.js";
+import { boxesRouter } from "./boxes.js";
 
 export const apiRouter = Router();
 
-apiRouter.get("/hello", (_, res) => {
-  res.status(200).send("Whatup from API");
-});
+apiRouter.use("/spiders", spidersRouter);
+apiRouter.use("/boxes", boxesRouter);

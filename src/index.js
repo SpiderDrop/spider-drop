@@ -1,23 +1,30 @@
+import { config } from "dotenv";
+config();
+
 import express from "express";
 import { apiRouter } from "./api/index.js";
 import { configRouter } from "./core/config.js";
 import { auth, authRouter } from "./core/auth.js";
 import path from "path";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import { config } from "dotenv";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-config();
 
 app.use(express.json());
 
 app.use("/auth", authRouter);
 app.use("/config.json", configRouter);
+
+app.use(
+  express.raw({
+    type: "application/octet-stream",
+  })
+);
 
 app.use("/api", auth);
 app.use("/api", apiRouter);
