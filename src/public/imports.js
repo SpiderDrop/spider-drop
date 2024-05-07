@@ -15,12 +15,14 @@ function addImports() {
   customElements.defineComponent = componentName => {
     const templateUrl = `./components/${componentName}/${componentName}.html`;
 
-    fetch(templateUrl).then(response => response.text()).then(response => {
-      let template = document.createElement("template");
-      template.id = componentName;
-      template.innerHTML = response;
-      document.head.appendChild(template);
-    });
+    return fetch(templateUrl)
+      .then(response => response.text())
+      .then(response => {
+        let template = document.createElement("template");
+        template.id = componentName;
+        template.innerHTML = response;
+        document.head.appendChild(template);
+      });
   };
 
   for (let importUrl of scriptImports) {

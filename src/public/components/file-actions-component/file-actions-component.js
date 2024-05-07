@@ -85,5 +85,5 @@ export default class FileActionsComponent extends HTMLElement {
   disconnectedCallback() {}
 }
 
+await customElements.defineComponent("file-actions-component");
 customElements.define("file-actions", FileActionsComponent);
-customElements.defineComponent("file-actions-component");
