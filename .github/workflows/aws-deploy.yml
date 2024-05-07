@@ -14,8 +14,6 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_PRIVATE}}
       AWS_REGION: 'eu-west-1'
 
-  
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,11 +24,13 @@ jobs:
           secret-ids: |
             TawandaTest
 
+      - name: Debug show secret value
+        run: |
+          echo "Secret Value: ${{ env.TAWANDATEST }}"
+        
       - name: Create .env file and add DB_NAME
         run: |
-          echo "DB_NAME=${{ steps.secrets.outputs.TAWANDATEST }}" > .env
-        env:
-          TAWANDATEST: ${{ steps.secrets.outputs.TAWANDATEST_TESTNAME }}
+          echo "DB_NAME=" > .env
 
 
       - name: Package artifact
