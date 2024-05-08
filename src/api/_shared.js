@@ -19,8 +19,9 @@ export async function mapSpiders(objects, prefix, recursive = false) {
     return {
       ...object,
       // TODO: Specify correct value bases on user setting.
-      Key: pathUnits[pathUnits.length - 2],
       sharing: false,
+      immediateKey: pathUnits[pathUnits.length - 2],
+      name: pathUnits.filter((unit) => unit.length > 0).pop(),
       path: pathUnits.slice(2, pathUnits.length).join("/"),
       isBox: object.Key.endsWith("/")
     };

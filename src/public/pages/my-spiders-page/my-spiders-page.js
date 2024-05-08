@@ -1,8 +1,4 @@
 export default class MySpidersPage extends HTMLElement {
-  constructor() {
-    super();
-  }
-
   navigateBack(offset) {
     const spiderViewElement = this.shadowRoot.querySelector("spider-view");
     spiderViewElement.setAttribute("offset", `${offset}`);
