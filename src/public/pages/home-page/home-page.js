@@ -51,7 +51,7 @@ export default class HomePage extends HTMLElement {
   async doLogin() {
     const config = await getConfig();
     const authorizeUrl = `${config.AUTHORIZATION_URL}?client_id=${config.AUTH0_CLIENT_ID}&response_type=code&redirect_uri=${config.SIGN_IN_REDIRECT_URL}&audience=${config.JWT_AUDIENCE}&scope=openid profile email`;
-    window.open(authorizeUrl);
+    window.location.href = authorizeUrl;
   }
 }
 
