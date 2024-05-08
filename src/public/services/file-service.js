@@ -3,7 +3,7 @@ import { getAccessToken } from "../../services/auth-service.js";
 let token = getAccessToken();
 
 export async function fetchCurrentDirectory(path) {
-  const response = await fetch("/api/boxes/", {
+  const response = await fetch("/api/boxes/" + path, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -12,4 +12,14 @@ export async function fetchCurrentDirectory(path) {
   });
 
   return response.json();
+}
+
+export async function addBox(path) {
+  return fetch("/api/boxes/" + path, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  });
 }
