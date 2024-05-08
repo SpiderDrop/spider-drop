@@ -17,48 +17,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Get secrets
-        uses: aws-actions/aws-secretsmanager-get-secrets@v2.0.1
-        with:
-          secret-ids: |
-            JWKS_URI,spiderdrop-JWKS_URI
-            AUTH0_CLIENT_ID,spiderdrop-AUTH0_CLIENT_ID
-            AUTH0_CLIENT_SECRET,spiderdrop-AUTH0_CLIENT_SECRET
-            SIGN_IN_REDIRECT_URL,spiderdrop-SIGN_IN_REDIRECT_URL
-            JWT_AUDIENCE,spiderdrop-JWT_AUDIENCE
-            AUTHORIZATION_URL,spiderdrop-AUTHORIZATION_URL
-            ACCESS_TOKEN_URL,spiderdrop-ACCESS_TOKEN_URL
-            USER_INFO_URL,spiderdrop-USER_INFO_URL
-            DB_SERVER,spiderdrop-DB_SERVER
-            DB_USERNAME,spiderdrop-DB_USERNAME
-            DB_PASSWORD,spiderdrop-DB_PASSWORD
-            spiderdrop-AWS_REGION
-            spiderdrop-AWS_ACCESS_KEY_ID
-            spiderdrop-AWS_SECRET_ACCESS_KEY
-            AWS_BUCKET_PREFIX,spiderdrop-AWS_BUCKET_PREFIX
-
-      - name: Debug show secret value
-        run: |
-          echo "Secret Value: ${{ env.AWS_REGION }}"
    
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2.0
         with:
-          envkey_JWKS_URI: ${{ env.JWKS_URI }}
-          envkey_AUTH0_CLIENT_ID: ${{ env.AUTH0_CLIENT_ID }}
-          envkey_AUTH0_CLIENT_SECRET: ${{ env.AUTH0_CLIENT_SECRET }}
-          envkey_SIGN_IN_REDIRECT_URL: ${{ env.SIGN_IN_REDIRECT_URL }}
-          envkey_JWT_AUDIENCE: ${{ env.JWT_AUDIENCE }}
-          envkey_AUTHORIZATION_URL: ${{ env.AUTHORIZATION_URL }}
-          envkey_ACCESS_TOKEN_URL: ${{ env.ACCESS_TOKEN_URL }}
-          envkey_USER_INFO_URL: ${{ env.USER_INFO_URL }}
-          envkey_DB_SERVER: ${{ env.DB_SERVER }}
-          envkey_DB_USERNAME: ${{ env.DB_USERNAME }}
-          envkey_DB_PASSWORD: ${{ env.DB_PASSWORD }}
-          envkey_AWS_BUCKET_PREFIX: ${{ env.AWS_BUCKET_PREFIX }}
-          envkey_AWS_ACCESS_KEY_ID: ${{ env.SPIDERDROP_AWS_ACCESS_KEY_ID }}
-          envkey_AWS_SECRET_ACCESS_KEY: ${{ env.SPIDERDROP_AWS_ACCESS_KEY }}
+          envkey_JWKS_URI: ${{ secrets.JWKS_URI }}
+          envkey_AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+          envkey_AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+          envkey_SIGN_IN_REDIRECT_URL: ${{ secrets.SIGN_IN_REDIRECT_URL }}
+          envkey_JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
+          envkey_AUTHORIZATION_URL: ${{ secrets.AUTHORIZATION_URL }}
+          envkey_ACCESS_TOKEN_URL: ${{ secrets.ACCESS_TOKEN_URL }}
+          envkey_USER_INFO_URL: ${{ secrets.USER_INFO_URL }}
+          envkey_DB_SERVER: ${{ secrets.DB_SERVER }}
+          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          envkey_AWS_BUCKET_PREFIX: ${{ secrets.AWS_BUCKET_PREFIX }}
+          envkey_AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_PUBLIC}}
+          envkey_AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_PRIVATE}}
           envkey_AWS_REGION: ${{secrets.AWS_REGION}}
 
       - name: Package artifact
