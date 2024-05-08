@@ -27,6 +27,14 @@ jobs:
       - name: Debug show secret value
         run: |
           echo "Secret Value: ${{ env.TAWANDATEST }}"
+
+          
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_DEBUG: false
+          envkey_SOME_API_KEY: "123456abcdef"
+          envkey_SECRET_KEY: "password123"
         
       - name: Create .env file and add DB_NAME
         run: |
