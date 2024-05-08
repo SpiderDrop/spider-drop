@@ -42,7 +42,7 @@ jobs:
 
 
       - name: Package artifact
-        run:
+        run: |
           ls -alh 
           zip -r site.zip *
 
