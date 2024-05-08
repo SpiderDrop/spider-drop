@@ -12,7 +12,7 @@ jobs:
     env: 
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_PUBLIC}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_PRIVATE}}
-      AWS_REGION: 'eu-west-1'
+      AWS_REGION: ${{secrets.AWS_REGION}}
 
     steps:
       - name: Checkout code
@@ -22,7 +22,6 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@v2.0.1
         with:
           secret-ids: |
-            TawandaTest
             JWKS_URI,spiderdrop-JWKS_URI
             AUTH0_CLIENT_ID,spiderdrop-AUTH0_CLIENT_ID
             AUTH0_CLIENT_SECRET,spiderdrop-AUTH0_CLIENT_SECRET
@@ -36,25 +35,32 @@ jobs:
             DB_PASSWORD,spiderdrop-DB_PASSWORD
             spiderdrop-AWS_REGION
             spiderdrop-AWS_ACCESS_KEY_ID
-            spiderdrop-
+            spiderdrop-AWS_SECRET_ACCESS_KEY
             AWS_BUCKET_PREFIX,spiderdrop-AWS_BUCKET_PREFIX
 
       - name: Debug show secret value
         run: |
           echo "Secret Value: ${{ env.AWS_REGION }}"
-
-          
+   
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2.0
         with:
-          envkey_DEBUG: false
-          envkey_SOME_API_KEY: "123456abcdef"
-          envkey_SECRET_KEY: "password123"
-        
-      - name: Create .env file and add DB_NAME
-        run: |
-          echo "DB_NAME=" >> .env
-
+          envkey_JWKS_URI: ${{ env.JWKS_URI }}
+          envkey_AUTH0_CLIENT_ID: ${{ env.AUTH0_CLIENT_ID }}
+          envkey_AUTH0_CLIENT_SECRET: ${{ env.AUTH0_CLIENT_SECRET }}
+          envkey_SIGN_IN_REDIRECT_URL: ${{ env.SIGN_IN_REDIRECT_URL }}
+          envkey_JWT_AUDIENCE: ${{ env.JWT_AUDIENCE }}
+          envkey_AUTHORIZATION_URL: ${{ env.AUTHORIZATION_URL }}
+          envkey_ACCESS_TOKEN_URL: ${{ env.ACCESS_TOKEN_URL }}
+          envkey_USER_INFO_URL: ${{ env.USER_INFO_URL }}
+          envkey_DB_SERVER: ${{ env.DB_SERVER }}
+          envkey_DB_USERNAME: ${{ env.DB_USERNAME }}
+          envkey_DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          envkey_AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          envkey_AWS_BUCKET_PREFIX: ${{ env.AWS_BUCKET_PREFIX }}
+          envkey_AWS_ACCESS_KEY_ID: ${{ env.SPIDERDROP_AWS_ACCESS_KEY_ID }}
+          envkey_AWS_SECRET_ACCESS_KEY: ${{ env.SPIDERDROP_AWS_ACCESS_KEY }}
+          envkey_AWS_REGION: ${{secrets.AWS_REGION}}
 
       - name: Package artifact
         run: |
