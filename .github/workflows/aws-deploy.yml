@@ -35,9 +35,9 @@ jobs:
             DB_USERNAME,spiderdrop-DB_USERNAME
             DB_PASSWORD,spiderdrop-DB_PASSWORD
             AWS_REGION,spiderdrop-AWS_REGION
-            AWS_ACCESS_KEY_ID,spiderdrop-AWS_ACCESS_KEY_ID
-            AWS_SECRET_ACCESS_KEY,spiderdrop-
-            AWS_BUCKET_PREFIX,spiderdrop-AWS_BUCKET_PREFIX
+            spiderdrop-AWS_ACCESS_KEY_ID
+            spiderdrop-
+            spiderdrop-AWS_BUCKET_PREFIX
 
       - name: Debug show secret value
         run: |
