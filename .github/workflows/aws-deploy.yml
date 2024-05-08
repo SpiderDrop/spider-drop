@@ -38,11 +38,13 @@ jobs:
         
       - name: Create .env file and add DB_NAME
         run: |
-          echo "DB_NAME=" > .env
+          echo "DB_NAME=" >> .env
 
 
       - name: Package artifact
-        run: zip -r site.zip *
+        run:
+          ls -alh 
+          zip -r site.zip *
 
       - name: Upload artifact to S3
         run: aws s3 cp site.zip s3://${{ secrets.AWS_BUCKET_NAME }}/application-${{ github.run_id }}.zip
