@@ -9,6 +9,15 @@
     font-weight: 500;
 }
 
+p {
+    margin: 0;
+}
+
+.inline {
+    display: flex;
+    gap: 1rem;
+}
+
 .icons {
     display: flex;
     gap: 1.875rem;
@@ -48,3 +57,4 @@
         width: 4.0625rem;
     }
 }
+

@@ -3,11 +3,6 @@ export default class SearchHeaderComponent extends HTMLElement {
     super();
   }
 
-  attributeChangedCallback(property, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    this[property] = newValue;
-  }
-
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "closed" });
     const template = document

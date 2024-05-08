@@ -4,8 +4,8 @@ export function getObjectKey(userEmail, suffix) {
 
 export async function mapSpiders(objects, prefix, recursive = false) {
   const filter = recursive
-    ? (object) => object.Key.startsWith(prefix) && object.Key !== prefix
-    : (object) => {
+    ? object => object.Key.startsWith(prefix) && object.Key !== prefix
+    : object => {
         const units = object.Key.replace(prefix, "").split("/");
         return (
           object.Key.startsWith(prefix) &&
@@ -14,14 +14,15 @@ export async function mapSpiders(objects, prefix, recursive = false) {
         );
       };
 
-  return objects.filter(filter).map((object) => {
+  return objects.filter(filter).map(object => {
     const pathUnits = object.Key.split("/");
     return {
       ...object,
       // TODO: Specify correct value bases on user setting.
+      Key: pathUnits[pathUnits.length - 2],
       sharing: false,
       path: pathUnits.slice(2, pathUnits.length).join("/"),
-      isBox: object.Key.endsWith("/"),
+      isBox: object.Key.endsWith("/")
     };
   });
 }
