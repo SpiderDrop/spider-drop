@@ -105,7 +105,7 @@ export default class SpiderViewComponent extends HTMLElement {
       rowElement.appendChild(rowTemplate);
 
       if (entry.isFolder) {
-        rowElement.addEventListener("dblclick", (event) => {
+        rowElement.addEventListener("click", (_) => {
           this.expandFolder(entry.name);
           this.dispatchEvent(new CustomEvent("folderEntered", {
             bubbles: true, 
