@@ -23,3 +23,15 @@ export async function addBox(path) {
     }
   });
 }
+
+export async function getPreviewUrl(path) {
+  const response = await fetch(`/api/spiders/preview-url/${path}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  });
+
+  return response.json();
+}
