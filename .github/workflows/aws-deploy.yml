@@ -23,10 +23,25 @@ jobs:
         with:
           secret-ids: |
             TawandaTest
+            JWKS_URI,spiderdrop-JWKS_URI
+            AUTH0_CLIENT_ID,spiderdrop-AUTH0_CLIENT_ID
+            AUTH0_CLIENT_SECRET,spiderdrop-AUTH0_CLIENT_SECRET
+            SIGN_IN_REDIRECT_URL,spiderdrop-SIGN_IN_REDIRECT_URL
+            JWT_AUDIENCE,spiderdrop-JWT_AUDIENCE
+            AUTHORIZATION_URL,spiderdrop-AUTHORIZATION_URL
+            ACCESS_TOKEN_URL,spiderdrop-ACCESS_TOKEN_URL
+            USER_INFO_URL,spiderdrop-USER_INFO_URL
+            DB_SERVER,spiderdrop-DB_SERVER
+            DB_USERNAME,spiderdrop-DB_USERNAME
+            DB_PASSWORD,spiderdrop-DB_PASSWORD
+            AWS_REGION,spiderdrop-AWS_REGION
+            AWS_ACCESS_KEY_ID,spiderdrop-AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY,spiderdrop-
+            AWS_BUCKET_PREFIX,spiderdrop-AWS_BUCKET_PREFIX
 
       - name: Debug show secret value
         run: |
-          echo "Secret Value: ${{ env.TAWANDATEST }}"
+          echo "Secret Value: ${{ env.AWS_REGION }}"
 
           
       - name: Make envfile
