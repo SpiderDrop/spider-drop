@@ -46,7 +46,7 @@ export default class SpiderViewComponent extends HTMLElement {
       const lastModified = new Date(entity.LastModified);
       
       this.entries.push({
-        name: entity.Key,
+        name: entity.name,
         modified: dateTimeFormat.format(lastModified),
         size: entity.Size + (isFolder ? " files" : ""),
         sharing: Boolean(entity.sharing) ? "public" : "private",
