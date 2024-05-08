@@ -12,14 +12,35 @@ jobs:
     env: 
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_PUBLIC}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_PRIVATE}}
-      AWS_REGION: 'eu-west-1'
+      AWS_REGION: ${{secrets.AWS_REGION}}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+   
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_JWKS_URI: ${{ secrets.JWKS_URI }}
+          envkey_AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+          envkey_AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+          envkey_SIGN_IN_REDIRECT_URL: ${{ secrets.SIGN_IN_REDIRECT_URL }}
+          envkey_JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
+          envkey_AUTHORIZATION_URL: ${{ secrets.AUTHORIZATION_URL }}
+          envkey_ACCESS_TOKEN_URL: ${{ secrets.ACCESS_TOKEN_URL }}
+          envkey_USER_INFO_URL: ${{ secrets.USER_INFO_URL }}
+          envkey_DB_SERVER: ${{ secrets.DB_SERVER }}
+          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          envkey_AWS_BUCKET_PREFIX: ${{ secrets.AWS_BUCKET_PREFIX }}
+          envkey_AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+          envkey_AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+          envkey_AWS_REGION: ${{secrets.AWS_REGION}}
 
       - name: Package artifact
-        run: zip -r site.zip *
+        run: |
+          ls -alh 
+          zip -r site.zip * .env
 
       - name: Upload artifact to S3
         run: aws s3 cp site.zip s3://${{ secrets.AWS_BUCKET_NAME }}/application-${{ github.run_id }}.zip
