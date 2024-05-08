@@ -56,7 +56,6 @@ jobs:
           envkey_DB_SERVER: ${{ env.DB_SERVER }}
           envkey_DB_USERNAME: ${{ env.DB_USERNAME }}
           envkey_DB_PASSWORD: ${{ env.DB_PASSWORD }}
-          envkey_AWS_SECRET_ACCESS_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
           envkey_AWS_BUCKET_PREFIX: ${{ env.AWS_BUCKET_PREFIX }}
           envkey_AWS_ACCESS_KEY_ID: ${{ env.SPIDERDROP_AWS_ACCESS_KEY_ID }}
           envkey_AWS_SECRET_ACCESS_KEY: ${{ env.SPIDERDROP_AWS_ACCESS_KEY }}
