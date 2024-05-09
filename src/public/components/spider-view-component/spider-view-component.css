@@ -55,6 +55,10 @@ tbody {
         background-color: var(--gray-hover-color);
         cursor: pointer;
     }
+
+    :last-child {
+        border: none;
+    }
 }
 
 .round-corners {
