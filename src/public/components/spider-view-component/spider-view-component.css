@@ -16,6 +16,10 @@
     overflow-y: scroll;
 }
 
+.loading {
+    cursor: wait;
+}
+
 table {
     table-layout: fixed;
     width: 100%;

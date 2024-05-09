@@ -10,7 +10,6 @@ spider-view {
 }
 
 .main-content {
-    container: main-content / inline-size;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,11 +17,4 @@ spider-view {
 
 .section-content {
     width: 70%;
-}
-
-@container main-content (min-width: 700px) {
-    .section-content {
-        width: 100%;
-        font-size: 1.5rem;
-    }
 }

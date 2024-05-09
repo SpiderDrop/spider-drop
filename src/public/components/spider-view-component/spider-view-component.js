@@ -2,7 +2,7 @@ import { fetchCurrentDirectory, getPreviewUrl, deleteBox, deleteSpider } from ".
 import { getFileType } from "../../services/file-types-service.js";
 
 export default class SpiderViewComponent extends HTMLElement {
-  static observedAttributes = ["refresh", "offset"];
+  static observedAttributes = ["refresh", "offset", "files-added"];
 
   constructor() {
     super();
@@ -12,9 +12,7 @@ export default class SpiderViewComponent extends HTMLElement {
   }
 
   navigateBackDirectories(directoryBackCount) {
-    if (directoryBackCount > this.currentPath.length)
-      return;
-
+    directoryBackCount = Math.min(directoryBackCount, this.currentPath.length - 1);
     this.currentPath.splice(-directoryBackCount, directoryBackCount);
     this.loadCurrentView();
   }
@@ -161,18 +159,7 @@ export default class SpiderViewComponent extends HTMLElement {
     containerElement.appendChild(defaultPreviewElement);
   }
 
-  disableContainer() {
-    const container = this.shadowRoot.querySelector(".container");
-    container.disabled = true;
-  }
-
-  enableContainer() {
-    const container = this.shadowRoot.querySelector(".container");
-    container.disabled = false;
-  }
-
   async deleteFileOrFolder(name, isFolder) {
-    this.disableContainer();
     const fullPath = this.currentPath.slice(1).join("/") + `/${name}`;
 
     if (isFolder) {
@@ -180,7 +167,6 @@ export default class SpiderViewComponent extends HTMLElement {
     } else {
       await deleteSpider(fullPath);
     }
-    this.enableContainer();
   }
 
   updateListDisplay() {
@@ -205,7 +191,9 @@ export default class SpiderViewComponent extends HTMLElement {
 
       const deleteIcon = rowElement.querySelector("#delete-icon");
       deleteIcon.addEventListener("click", (event) => {
+        rowElement.remove();
         this.deleteFileOrFolder(entry.name, entry.isFolder);
+        this.loadCurrentView();
       });
 
       if (entry.isFolder) {
