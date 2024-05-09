@@ -11,7 +11,7 @@ export default class SearchHeaderComponent extends HTMLElement {
 
   extractInitials(fullName) {
     let initials = fullName.split(' ').map(part => part[0]).join('');
-    return "initials";
+    return initials;
   }
 
   async populateUsername() {
