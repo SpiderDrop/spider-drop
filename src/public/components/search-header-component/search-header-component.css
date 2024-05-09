@@ -37,3 +37,19 @@ input {
     color: aliceblue;
     cursor: default;
 }
+
+
+.sign-out {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    right: 0; 
+    padding-right: 2rem; 
+    margin-top: 1.5rem;
+}
+
+.sign-out :hover {
+    color: var(--red);
+    cursor: pointer;
+}
