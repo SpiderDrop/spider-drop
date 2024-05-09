@@ -33,4 +33,5 @@
     font-size: 3rem;
     color: var(--bright-white);
     border-radius: 1.125rem;
+    cursor: pointer;
 }
