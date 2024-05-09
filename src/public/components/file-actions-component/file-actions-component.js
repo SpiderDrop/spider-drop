@@ -35,7 +35,7 @@ export default class FileActionsComponent extends HTMLElement {
         breadcrumb.querySelector("slot[name='breadcrumb']").append("My Spiders");
       }
       else {
-        breadcrumb.querySelector("slot[name='breadcrumb']").append(this.navigationPath[i]);
+        breadcrumb.querySelector("slot[name='breadcrumb']").append(`>${this.navigationPath[i]}`);
       }
       wrapper.appendChild(breadcrumb);
 
