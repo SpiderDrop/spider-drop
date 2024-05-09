@@ -38,7 +38,7 @@ jobs:
           envkey_AWS_REGION: ${{ secrets.AWS_REGION }}
           envkey_AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
           envkey_MAX_UPLOAD_SIZE: ${{ secrets.MAX_UPLOAD_SIZE }}
-
+          envkey_PREVIEW_URL_LIFETIME_SECONDS: ${{ secrets.PREVIEW_URL_LIFETIME_SECONDS }}
       - name: Package artifact
         run: |
           ls -alh 
