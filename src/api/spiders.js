@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { deleteObject, putObject, getSignedUrl } from "../core/s3.js";
-import { getKeyMiddleware, getObjectKey } from "./_shared.js";
 import { getSpiderShareList, insertSpiderSharedWith, isInSpiderShareList, revokeAllSpiderSharedList } from "./db/shared-spiders.js";
 import { withTransaction } from "../core/db.js";
 import { sendSpiderShared } from "./emails/senders.js";
+import { deleteObject, putObject, getSignedUrl, listObjects } from "../core/s3.js";
+import { delay, getKeyMiddleware, getObjectKey, MAX_SPIDERS_PER_BOX, ONE_SECOND_IN_MILLIS } from "./_shared.js";
 
 export const spidersRouter = Router();
 spidersRouter.use(getKeyMiddleware);
@@ -75,10 +75,19 @@ spidersRouter.put("/*", async (req, res) => {
   if (res.locals.key.length === 0) {
     res.status(400).json({ message: "Cannot create an unnamed spider." });
   } else {
+    const newObjectKey = getObjectKey(res.locals.email, `/${res.locals.key}`);
     await putObject(
       req.body,
-      getObjectKey(res.locals.email, `/${res.locals.key}`)
+      newObjectKey
     );
+
+    // It may take a second or 2 for the object to show up in the listing of objects.
+    let objects = (await listObjects(MAX_SPIDERS_PER_BOX)).Contents;
+    while (!objects.some((obj) => obj.Key === newObjectKey)) {
+      await delay(ONE_SECOND_IN_MILLIS);
+      objects = (await listObjects(MAX_SPIDERS_PER_BOX)).Contents;
+    }
+
     res.status(201).send();
   }
 });
@@ -87,7 +96,16 @@ spidersRouter.delete("/*", async (_req, res) => {
   if (res.locals.key.length === 0) {
     res.status(400).json({ message: "Cannot delete an unnamed spider." });
   } else {
-    await deleteObject(getObjectKey(res.locals.email, `/${res.locals.key}`));
+    const objectKey = getObjectKey(res.locals.email, `/${res.locals.key}`);
+    await deleteObject(objectKey);
+
+    // It may take a second or 2 for the object to no longer show up in the listing of objects.
+    let objects = (await listObjects(MAX_SPIDERS_PER_BOX)).Contents;
+    while (objects.some((obj) => obj.Key === objectKey)) {
+      await delay(ONE_SECOND_IN_MILLIS);
+      objects = (await listObjects(MAX_SPIDERS_PER_BOX)).Contents;
+    }
+
     res.status(200).send();
   }
 });

@@ -1,5 +1,6 @@
 import { listObjects } from "../core/s3.js";
 
+export const ONE_SECOND_IN_MILLIS = 1_000;
 export const MAX_SPIDERS_PER_BOX = 1_000_000;
 
 export function getObjectKey(userEmail, suffix) {
@@ -47,3 +48,7 @@ export async function getKeyMiddleware(req, res, next) {
   res.locals.key = req.path.replace("/", "");
   next();
 }
+
+export function delay(ms) {
+  return new Promise(resolve => setTimeout(() => resolve(x), ms));
+};
