@@ -1,4 +1,5 @@
-import { fetchCurrentDirectory } from "../../services/file-service.js";
+import { fetchCurrentDirectory, getPreviewUrl } from "../../services/file-service.js";
+import { getFileType } from "../../services/file-types-service.js";
 
 export default class SpiderViewComponent extends HTMLElement {
   static observedAttributes = ["refresh", "offset"];
@@ -50,7 +51,8 @@ export default class SpiderViewComponent extends HTMLElement {
         modified: dateTimeFormat.format(lastModified),
         size: entity.Size + (isFolder ? " files" : ""),
         sharing: Boolean(entity.sharing) ? "public" : "private",
-        isFolder: isFolder
+        isFolder: isFolder,
+        path: entity.path
       });
     }));
 
@@ -103,6 +105,63 @@ export default class SpiderViewComponent extends HTMLElement {
     containerElement.appendChild(emptyFolderTemplate.content.cloneNode(true));
   }
 
+  async previewFile(path) {
+    const previewUrl = await getPreviewUrl(path);
+    const fileType = getFileType(path);
+    
+    if(fileType === "images") {
+      this.showImagePreview(previewUrl.url);
+    } else if(fileType === "videos") {
+      this.showVideoPreview(previewUrl.url);
+    } else if(fileType === "audio") {
+      this.showAudioPreview(previewUrl.url);
+    } else {
+      this.showDefaultPreview(previewUrl.url);
+    }
+  }
+
+  showImagePreview(previewUrl) {
+    const containerElement = this.shadowRoot.querySelector(".container");
+    this.clearBody(containerElement);
+
+    const imagePreviewNode = this.shadowRoot.getElementById("image-preview-template").content.cloneNode(true);
+    const imageElement = imagePreviewNode.getElementById("image-preview");
+    imageElement.src = previewUrl;
+    containerElement.appendChild(imageElement);    
+  }
+
+  showVideoPreview(previewUrl) {
+    const containerElement = this.shadowRoot.querySelector(".container");
+    this.clearBody(containerElement);
+
+    const videoPreviewNode = this.shadowRoot.getElementById("video-preview-template").content.cloneNode(true);
+    const videoElement = videoPreviewNode.getElementById("video-preview");
+    videoElement.src = previewUrl;
+    videoElement.getElementsByTagName("a")[0].href = previewUrl;
+    containerElement.appendChild(videoElement);
+  }
+
+  showAudioPreview(previewUrl) {
+    const containerElement = this.shadowRoot.querySelector(".container");
+    this.clearBody(containerElement);
+
+    const audioPreviewNode = this.shadowRoot.getElementById("audio-preview-template").content.cloneNode(true);
+    const audioElement = audioPreviewNode.getElementById("audio-preview");
+    audioElement.src = previewUrl;
+    audioElement.getElementsByTagName("a")[0].href = previewUrl;
+    containerElement.appendChild(audioElement);
+  }
+
+  showDefaultPreview(previewUrl) {
+    const containerElement = this.shadowRoot.querySelector(".container");
+    this.clearBody(containerElement);
+
+    const defaultPreviewNode = this.shadowRoot.getElementById("default-preview-template").content.cloneNode(true);
+    const defaultPreviewElement = defaultPreviewNode.getElementById("default-preview");
+    defaultPreviewElement.getElementsByTagName("a")[0].href = previewUrl;
+    containerElement.appendChild(defaultPreviewElement);
+  }
+
   updateListDisplay() {
     const containerElement = this.shadowRoot.querySelector(".container");
     this.clearBody(containerElement);
@@ -124,20 +183,22 @@ export default class SpiderViewComponent extends HTMLElement {
       const rowElement = document.createElement("tr");
       rowElement.appendChild(rowTemplate);
 
-      if (entry.isFolder) {
-        rowElement.addEventListener("click", (_) => {
+      rowElement.addEventListener("click", (_) => {
+        if(entry.isFolder) {
           this.expandFolder(entry.name);
-          this.dispatchEvent(new CustomEvent("folderEntered", {
-            bubbles: true, 
-            cancelable: true, 
-            composed: true,
-            detail: {
-              folderName: entry.name
-            }
-          }));
-        });
-      }
+        } else {
+          this.previewFile(entry.path)
+        }
 
+        this.dispatchEvent(new CustomEvent("folderEntered", {
+          bubbles: true, 
+          cancelable: true, 
+          composed: true,
+          detail: {
+            folderName: entry.name
+          }
+        }));
+      });
       tableBody.appendChild(rowElement);
     });
   }

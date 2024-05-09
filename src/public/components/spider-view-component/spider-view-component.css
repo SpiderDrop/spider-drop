@@ -10,6 +10,8 @@
     border-radius: 1.125rem;
     padding: 0.25rem 1rem;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 table {
@@ -51,4 +53,8 @@ tbody {
     tr:hover {
         background-color: var(--gray-hover-color);
     }
+}
+
+.round-corners {
+    border-radius: var(--app-border-radius);
 }

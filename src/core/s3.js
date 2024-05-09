@@ -5,6 +5,7 @@ import {
   DeleteObjectCommand,
   ListObjectsV2Command
 } from "@aws-sdk/client-s3";
+import { getSignedUrl as s3GetSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import { config } from "dotenv";
 config();
@@ -56,4 +57,13 @@ export const deleteObject = async key => {
   const command = new DeleteObjectCommand(params);
   const response = await s3Client.send(command);
   return response;
+};
+
+export const getSignedUrl = async (key, expiresIn) => {
+  const params = {
+    Key: key,
+    Bucket: process.env.AWS_BUCKET_NAME,
+  };
+  const command = new GetObjectCommand(params);
+  return s3GetSignedUrl(s3Client, command, { expiresIn });
 };
