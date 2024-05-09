@@ -47,11 +47,13 @@ thead th:nth-child(4) {
 tr {
     border-bottom: 0.0625rem solid var(--dark-gray-accent);
     height: 3.75rem;
+    border-radius: var(--app-border-radius);
 }
 
 tbody {
     tr:hover {
         background-color: var(--gray-hover-color);
+        cursor: pointer;
     }
 }
 
