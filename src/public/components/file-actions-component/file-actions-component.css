@@ -28,6 +28,11 @@ p {
     }
 }
 
+.icons :hover {
+    color: var(--steel-blue);
+    cursor: pointer;
+}
+
 .create-folder-container {
     display: flex;
     border: 0.125rem solid var(--blue-darker-accent);
