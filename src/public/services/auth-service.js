@@ -40,6 +40,10 @@ export function getAccessToken() {
   return localStorage.getItem("ACCESS_TOKEN");
 }
 
+export function deleteAccessToken(){
+  localStorage.removeItem("ACCESS_TOKEN")
+}
+
 export function saveUsername(username) {
   localStorage.setItem("USER_NAME", username);
 }

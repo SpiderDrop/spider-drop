@@ -1,7 +1,8 @@
 import {
   getUserInformation,
   getAccessToken,
-  saveUsername
+  saveUsername,
+  deleteAccessToken
 } from "../../services/auth-service.js";
 
 export default class SidebarComponent extends HTMLElement {
@@ -10,6 +11,7 @@ export default class SidebarComponent extends HTMLElement {
   }
 
   navigateToHomePage() {
+    deleteAccessToken();
     location.assign("/");
   }
 
