@@ -51,19 +51,7 @@
     padding-left: 10%;
 }
 
-.sign-out-button {
-    width: 75%;
-    height: 3em;
-    background-color: var(--bright-white);
-    border: 0.1em solid var(--dark-gray-accent);
-    border-radius: 1em;
-    font-family: "Roboto", sans-serif;
-    font-size: 1.5em;
-    font-weight: 400;
-    font-style: normal;
-}
-
 .sign-out :hover {
-    background-color: var(--dark-gray-accent);
+    color: var(--red);
     cursor: pointer;
 }

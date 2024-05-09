@@ -29,7 +29,7 @@ export default class SidebarComponent extends HTMLElement {
     shadow.appendChild(template);
 
     shadow
-      .getElementById("sign-out-button")
+      .getElementById("sign-out-icon")
       .addEventListener("click", () => this.navigateToHomePage());
     
     this.populateUsername();
