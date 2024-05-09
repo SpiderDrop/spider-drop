@@ -15,7 +15,6 @@ p {
 
 .inline {
     display: flex;
-    gap: 1rem;
 }
 
 .icons {
@@ -31,6 +30,10 @@ p {
 .icons :hover {
     color: var(--steel-blue);
     cursor: pointer;
+}
+
+.loading :hover {
+    cursor: wait;
 }
 
 .create-folder-container {
@@ -63,3 +66,6 @@ p {
     }
 }
 
+.breadcrumb-item {
+    cursor: pointer;
+}

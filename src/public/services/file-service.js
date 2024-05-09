@@ -41,3 +41,26 @@ export async function filteredContent(filter) {
 
   return response.json();
 }
+export async function getPreviewUrl(path) {
+  const response = await fetch(`/api/spiders/preview-url/${path}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  });
+
+  return response.json();
+}
+
+
+export async function uploadFiles(path, fileBlob) {
+  return fetch("/api/spiders/" + path, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/octet-stream"
+    },
+    body: fileBlob
+  });
+}

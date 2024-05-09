@@ -12,6 +12,26 @@
     </main>
 </template>
 
+<template id="video-preview-template">
+    <video id="video-preview" class="round-corners" controls>
+        <p>Your browser doesn't support HTML5 video. Here is a <a>link to the video</a> instead.</p>
+    </video>
+</template>
+
+<template id="audio-preview-template">
+    <audio id="audio-preview" controls>
+        <p>Your browser doesn't support HTML5 audio. Here is a <a>link to the audio</a> instead.</p>
+    </audio>
+</template>
+
+<template id="default-preview-template">
+    <p id="default-preview">We cannot preview this spider. Here is a <a>link to the spider</a> instead.</p>
+</template>
+
+<template id="image-preview-template">
+    <img class="round-corners" id="image-preview" alt="" />
+</template>
+
 <template id="row-template">
     <td><slot name="name"></slot></td>
     <td><slot name="modified"></slot></td>

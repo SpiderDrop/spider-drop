@@ -1,6 +1,29 @@
+import {
+  getUserInformation,
+  getAccessToken,
+  saveUsername,
+  deleteAccessToken
+} from "../../services/auth-service.js";
 export default class SearchHeaderComponent extends HTMLElement {
   constructor() {
     super();
+  }
+
+  navigateToHomePage() {
+    deleteAccessToken();
+    location.assign("/");
+  }
+
+  extractInitials(fullName) {
+    let initials = fullName.split(' ').map(part => part[0]).join('');
+    return initials;
+  }
+
+  async populateUsername() {
+    let accessToken = getAccessToken();
+    let userInfo = await getUserInformation(accessToken);
+    saveUsername(userInfo.name);
+    this.shadowRoot.querySelector("slot[name='username']").append(this.extractInitials(userInfo.name));
   }
 
   connectedCallback() {
@@ -23,6 +46,12 @@ export default class SearchHeaderComponent extends HTMLElement {
         })
       );
     });
+
+    shadow
+      .getElementById("sign-out-icon")
+      .addEventListener("click", () => this.navigateToHomePage());
+
+    this.populateUsername();
   }
 
   disconnectedCallback() {}

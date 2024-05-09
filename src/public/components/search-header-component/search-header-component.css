@@ -26,3 +26,30 @@ input {
     aspect-ratio: 1 / 1;
     min-width: 3.5rem;
 }
+
+.avatar {
+    border-radius: 50%;
+    background-color: var(--steel-blue);
+    width: 3em;
+    height: 3em;
+    align-content: center;
+    text-align: center;
+    color: aliceblue;
+    cursor: default;
+}
+
+
+.sign-out {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    right: 0; 
+    padding-right: 2rem; 
+    margin-top: 1.5rem;
+}
+
+.sign-out :hover {
+    color: var(--red);
+    cursor: pointer;
+}

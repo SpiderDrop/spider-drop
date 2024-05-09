@@ -1,4 +1,4 @@
-import { addBox } from "../../services/file-service.js";
+import { addBox, uploadFiles } from "../../services/file-service.js";
 
 export default class FileActionsComponent extends HTMLElement {
   static observedAttributes = [ "latest-path" ];
@@ -35,7 +35,7 @@ export default class FileActionsComponent extends HTMLElement {
         breadcrumb.querySelector("slot[name='breadcrumb']").append("My Spiders");
       }
       else {
-        breadcrumb.querySelector("slot[name='breadcrumb']").append(this.navigationPath[i]);
+        breadcrumb.querySelector("slot[name='breadcrumb']").append(`>${this.navigationPath[i]}`);
       }
       wrapper.appendChild(breadcrumb);
 
@@ -104,16 +104,40 @@ export default class FileActionsComponent extends HTMLElement {
     }
   }
 
+  refreshView() {
+    const uploadedFileEvent = new Event("refresh", {
+      composed: true,
+      bubbles: true,
+      cancelable: true
+    });
+
+    this.dispatchEvent(uploadedFileEvent);
+  }
+
   onUploadFile() {
     const uploadFileDialog = this.shadowRoot.getElementById(
       "upload-file-dialog"
     );
-    const uploadedFileEvent = new CustomEvent("filesUploaded", {
-      composed: true,
-      bubbles: true,
-      detail: { files: Array.from(uploadFileDialog.files) }
+
+    const container = this.shadowRoot.getElementById("upload-file");
+
+    uploadFileDialog.disabled = true;
+    container.classList.add("loading");
+    
+    let uploadedFiles = Array.from(uploadFileDialog.files);
+   
+    let currentPath = this.navigationPath.slice(1).join("/");
+    let promises = [];
+
+    uploadedFiles.forEach((file) => {
+      let fetchPromise = uploadFiles(currentPath + `/${file.name}`, file);
+      promises.push(fetchPromise);
     });
-    this.dispatchEvent(uploadedFileEvent);
+
+    Promise.all(promises);
+    uploadFileDialog.disabled = false;
+    container.classList.remove("loading");
+    this.refreshView();
   }
 
   connectedCallback() {
@@ -131,6 +155,9 @@ export default class FileActionsComponent extends HTMLElement {
 
     const uploadFileButton = shadow.getElementById("upload-icon");
     uploadFileButton.addEventListener("click", () => uploadFileDialog.click());
+
+    const reloadIcon = shadow.getElementById("reload-icon");
+    reloadIcon.addEventListener("click", () => this.refreshView());
 
     const createFolderInputElement = shadow.getElementById("folder-input");
     createFolderInputElement.addEventListener("keydown", event => {
