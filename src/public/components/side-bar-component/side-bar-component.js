@@ -19,7 +19,7 @@ export default class SidebarComponent extends HTMLElement {
     let accessToken = getAccessToken();
     let userInfo = await getUserInformation(accessToken);
     saveUsername(userInfo.name);
-    this.shadowRoot.querySelector("slot[name='username']").append(userInfo.name);
+    this.shadowRoot.querySelector("slot[name='username']").append(userInfo.name); 
   }
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
