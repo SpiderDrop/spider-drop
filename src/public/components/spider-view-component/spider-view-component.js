@@ -51,7 +51,7 @@ export default class SpiderViewComponent extends HTMLElement {
       this.entries.push({
         name: entity.name,
         modified: dateTimeFormat.format(lastModified),
-        size: entity.Size + (isFolder ? " files" : ""),
+        size: isFolder ? `${entity.Size} items` : this.formatBytes(entity.Size),
         sharing: Boolean(entity.sharing) ? "public" : "private",
         isFolder: isFolder,
         path: entity.path
@@ -224,6 +224,19 @@ export default class SpiderViewComponent extends HTMLElement {
   }
 
   disconnectedCallback() {}
+
+  formatBytes(bytes, decimals = 2) {
+    if(bytes <= 0) {
+      return '0 Bytes'
+    } else {
+      const k = 1024;
+      const dm = decimals < 0 ? 0 : decimals;
+      const sizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+  
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+    }
+  }
 }
 
 await customElements.defineComponent("spider-view-component");
