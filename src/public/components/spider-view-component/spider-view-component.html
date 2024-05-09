@@ -14,44 +14,58 @@
 
 <template id="video-preview-template">
     <video id="video-preview" class="round-corners" controls>
-        <p>Your browser doesn't support HTML5 video. Here is a <a>link to the video</a> instead.</p>
+        <p>Your browser doesn't support HTML5 video. Here is a <a>link to the
+                video</a> instead.</p>
     </video>
 </template>
 
 <template id="audio-preview-template">
     <audio id="audio-preview" controls>
-        <p>Your browser doesn't support HTML5 audio. Here is a <a>link to the audio</a> instead.</p>
+        <p>Your browser doesn't support HTML5 audio. Here is a <a>link to the
+                audio</a> instead.</p>
     </audio>
 </template>
 
 <template id="default-preview-template">
-    <p id="default-preview">We cannot preview this spider. Here is a <a>link to the spider</a> instead.</p>
+    <p id="default-preview">We cannot preview this spider. Here is a <a>link to
+            the spider</a> instead.</p>
 </template>
 
 <template id="image-preview-template">
-    <img class="round-corners" id="image-preview" alt="" />
-</template>
-
-<template id="row-template">
-    <td><slot name="name"></slot></td>
-    <td><slot name="modified"></slot></td>
-    <td><slot name="size"></slot></td>
-    <td><slot name="sharing"></slot></td>
+    <img class="round-corners" id="image-preview" alt />
 </template>
 
 <template id="column-template">
     <table>
         <thead>
             <tr>
+                <th scope="col"></th>
                 <th scope="col" id="name">Name</th>
-                <th scope="col" id="modified">Modified </th>
+                <th scope="col" id="modified">Uploaded</th>
                 <th scope="col" id="size">Size</th>
-                <th scope="col" id="sharing">Sharing</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
+</template>
+
+<template id="row-template">
+    <td>
+        <img id="folder-icon" src="./assets/icons/folder.svg">
+        <img id="file-icon" src="./assets/icons/file.svg">
+    </td>
+    <td id="name">
+        <slot name="name"></slot>
+    </td>
+    <td><slot name="modified"></slot></td>
+    <td>
+        <slot name="size"></slot>
+    </td>
+    <td>
+        <img id="delete-icon" src="./assets/icons/delete.svg">
+    </td>
 </template>
 
 <main class="container">

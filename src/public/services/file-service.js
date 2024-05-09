@@ -24,6 +24,26 @@ export async function addBox(path) {
   });
 }
 
+export async function deleteBox(path) {
+  return fetch("/api/boxes/" + path, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  });
+}
+
+export async function deleteSpider(path) {
+  return fetch("/api/spiders/" + path, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  });
+}
+
 export async function getPreviewUrl(path) {
   const response = await fetch(`/api/spiders/preview-url/${path}`, {
     method: "GET",

@@ -85,6 +85,7 @@ export default class FileActionsComponent extends HTMLElement {
   toggleDialog() {
     this.showingFolderInput = !this.showingFolderInput;
     const uploadFileElement = this.shadowRoot.getElementById("upload-icon");
+    const reloadElement = this.shadowRoot.getElementById("reload-icon");
     const folderNameInputElement = this.shadowRoot.getElementById(
       "folder-input"
     );
@@ -94,11 +95,13 @@ export default class FileActionsComponent extends HTMLElement {
 
     if (this.showingFolderInput) {
       uploadFileElement.style.display = "none";
+      reloadElement.style.display = "none";
       folderNameInputElement.removeAttribute("hidden");
       folderContainerElement.classList.add("create-folder-container");
     } else {
       this.onAddFolder();
       uploadFileElement.style.display = "inline";
+      reloadElement.style.display = "inline";
       folderNameInputElement.setAttribute("hidden", true);
       folderContainerElement.classList.remove("create-folder-container");
     }
@@ -122,7 +125,7 @@ export default class FileActionsComponent extends HTMLElement {
     const container = this.shadowRoot.getElementById("upload-file");
 
     uploadFileDialog.disabled = true;
-    container.classList.add("loading");
+    document.body.style.cursor = "wait";
     
     let uploadedFiles = Array.from(uploadFileDialog.files);
    
@@ -136,7 +139,7 @@ export default class FileActionsComponent extends HTMLElement {
 
     Promise.all(promises);
     uploadFileDialog.disabled = false;
-    container.classList.remove("loading");
+    document.body.style.cursor = "pointer"
     this.refreshView();
   }
 
