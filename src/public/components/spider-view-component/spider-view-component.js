@@ -1,7 +1,10 @@
-import { fetchCurrentDirectory } from "../../services/file-service.js";
+import {
+  fetchCurrentDirectory,
+  filteredContent
+} from "../../services/file-service.js";
 
 export default class SpiderViewComponent extends HTMLElement {
-  static observedAttributes = ["refresh", "offset"];
+  static observedAttributes = ["refresh", "offset", "search"];
 
   constructor() {
     super();
@@ -10,8 +13,7 @@ export default class SpiderViewComponent extends HTMLElement {
   }
 
   navigateBackDirectories(directoryBackCount) {
-    if (directoryBackCount > this.currentPath.length)
-      return;
+    if (directoryBackCount > this.currentPath.length) return;
 
     this.currentPath.splice(-directoryBackCount, directoryBackCount);
     this.loadCurrentView();
@@ -25,13 +27,22 @@ export default class SpiderViewComponent extends HTMLElement {
     if (name === "offset") {
       this.navigateBackDirectories(Number(newValue));
     }
+    if (name === "search") {
+      this.loadCurrentView(newValue);
+    }
   }
 
-  async loadCurrentView() {
+  async search(spider) {
+    return await filteredContent(spider);
+  }
+
+  async loadCurrentView(search = "") {
     const fullPath = this.currentPath.slice(1).join("/");
-    let currentDirectory = await fetchCurrentDirectory(fullPath);
-  
-    const dateTimeFormat = new Intl.DateTimeFormat("en", { 
+    let currentDirectory = search
+      ? await this.search(search)
+      : await fetchCurrentDirectory(fullPath);
+
+    const dateTimeFormat = new Intl.DateTimeFormat("en", {
       day: "numeric",
       month: "short",
       year: "numeric",
@@ -41,10 +52,10 @@ export default class SpiderViewComponent extends HTMLElement {
 
     this.entries = [];
 
-    currentDirectory.forEach((entity => {
+    currentDirectory.forEach((entity) => {
       const isFolder = Boolean(entity.isBox);
       const lastModified = new Date(entity.LastModified);
-      
+
       this.entries.push({
         name: entity.name,
         modified: dateTimeFormat.format(lastModified),
@@ -52,7 +63,7 @@ export default class SpiderViewComponent extends HTMLElement {
         sharing: Boolean(entity.sharing) ? "public" : "private",
         isFolder: isFolder
       });
-    }));
+    });
 
     if (this.entries.length) {
       this.updateListDisplay();
@@ -75,7 +86,7 @@ export default class SpiderViewComponent extends HTMLElement {
     headingElement.appendChild(sortedIconTemplate.content.cloneNode(true));
     const heading = headingElement.id;
 
-    this.entries.sort(function(a, b) {
+    this.entries.sort(function (a, b) {
       if (a[heading] < b[heading]) return -1;
 
       return a[heading] > b[heading] ? 1 : 0;
@@ -85,8 +96,8 @@ export default class SpiderViewComponent extends HTMLElement {
   }
 
   expandFolder(folderName) {
-     this.currentPath.push(folderName);
-     this.loadCurrentView();
+    this.currentPath.push(folderName);
+    this.loadCurrentView();
   }
 
   clearBody(element) {
@@ -99,7 +110,9 @@ export default class SpiderViewComponent extends HTMLElement {
     const containerElement = this.shadowRoot.querySelector(".container");
     this.clearBody(containerElement);
 
-    const emptyFolderTemplate = this.shadowRoot.getElementById("empty-folder-template");
+    const emptyFolderTemplate = this.shadowRoot.getElementById(
+      "empty-folder-template"
+    );
     containerElement.appendChild(emptyFolderTemplate.content.cloneNode(true));
   }
 
@@ -114,7 +127,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const rowTemplateElement = this.shadowRoot.getElementById("row-template");
 
-    this.entries.forEach(entry => {
+    this.entries.forEach((entry) => {
       const rowTemplate = rowTemplateElement.content.cloneNode(true);
       rowTemplate.querySelector("slot[name='name']").append(entry.name);
       rowTemplate.querySelector("slot[name='modified']").append(entry.modified);
@@ -127,14 +140,16 @@ export default class SpiderViewComponent extends HTMLElement {
       if (entry.isFolder) {
         rowElement.addEventListener("click", (_) => {
           this.expandFolder(entry.name);
-          this.dispatchEvent(new CustomEvent("folderEntered", {
-            bubbles: true, 
-            cancelable: true, 
-            composed: true,
-            detail: {
-              folderName: entry.name
-            }
-          }));
+          this.dispatchEvent(
+            new CustomEvent("folderEntered", {
+              bubbles: true,
+              cancelable: true,
+              composed: true,
+              detail: {
+                folderName: entry.name
+              }
+            })
+          );
         });
       }
 
@@ -151,7 +166,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const headings = this.shadowRoot.querySelectorAll("tr th");
 
-    headings.forEach(heading => {
+    headings.forEach((heading) => {
       heading.addEventListener("click", () => {
         this.sortBy(heading);
       });

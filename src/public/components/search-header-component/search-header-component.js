@@ -4,15 +4,25 @@ export default class SearchHeaderComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    const shadow = this.attachShadow({ mode: "closed" });
+    const shadow = this.attachShadow({ mode: "open" });
     const template = document
       .getElementById("search-header-component")
       .content.cloneNode(true);
     shadow.appendChild(template);
+    const search = this.shadowRoot.getElementById("input");
 
-    const search = this.shadowRoot.querySelector("input");
-    
-
+    search.addEventListener("change", (event) => {
+      this.dispatchEvent(
+        new CustomEvent("searchInput", {
+          composed: true,
+          bubbles: true,
+          cancelable: true,
+          detail: {
+            search: event.target.value
+          }
+        })
+      );
+    });
   }
 
   disconnectedCallback() {}

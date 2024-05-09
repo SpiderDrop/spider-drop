@@ -14,6 +14,11 @@ export default class MySpidersPage extends HTMLElement {
     spiderViewElement.setAttribute("refresh", "true");
   }
 
+  onInputChange(search) {
+    const spiderViewElement = this.shadowRoot.querySelector("spider-view");
+    spiderViewElement.setAttribute("search", search);
+  }
+
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
     const template = document
@@ -44,7 +49,14 @@ export default class MySpidersPage extends HTMLElement {
       this.navigateForward(event.detail.folderName);
       event.stopPropagation();
     });
+
+    shadow.addEventListener("searchInput", (event) => {
+      this.onInputChange(event.detail.search);
+      event.stopPropagation();
+    });
+
   }
+
 
   disconnectedCallback() {}
 }
