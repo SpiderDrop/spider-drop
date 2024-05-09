@@ -1,4 +1,4 @@
-import { fetchCurrentDirectory, getPreviewUrl } from "../../services/file-service.js";
+import { fetchCurrentDirectory, getPreviewUrl, deleteBox, deleteSpider } from "../../services/file-service.js";
 import { getFileType } from "../../services/file-types-service.js";
 
 export default class SpiderViewComponent extends HTMLElement {
@@ -33,7 +33,12 @@ export default class SpiderViewComponent extends HTMLElement {
     this.loadingFolder = true;
     const fullPath = this.currentPath.slice(1).join("/");
     let currentDirectory = await fetchCurrentDirectory(fullPath);
-
+    const dateOptions = {
+      weekday: "short", 
+      year: "numeric", 
+      month: "short", 
+      day: 'numeric',
+    };
     this.entries = [];
 
     currentDirectory.forEach((entity => {
@@ -42,9 +47,8 @@ export default class SpiderViewComponent extends HTMLElement {
       
       this.entries.push({
         name: entity.name,
-        modified: lastModified.toLocaleString(),
+        modified: lastModified.toLocaleString("en-US", dateOptions),
         size: isFolder ? `${entity.Size} items` : this.formatBytes(entity.Size),
-        sharing: Boolean(entity.sharing) ? "public" : "private",
         isFolder: isFolder,
         path: entity.path
       });
@@ -157,6 +161,28 @@ export default class SpiderViewComponent extends HTMLElement {
     containerElement.appendChild(defaultPreviewElement);
   }
 
+  disableContainer() {
+    const container = this.shadowRoot.querySelector(".container");
+    container.disabled = true;
+  }
+
+  enableContainer() {
+    const container = this.shadowRoot.querySelector(".container");
+    container.disabled = false;
+  }
+
+  async deleteFileOrFolder(name, isFolder) {
+    this.disableContainer();
+    const fullPath = this.currentPath.slice(1).join("/") + `/${name}`;
+
+    if (isFolder) {
+      await deleteBox(fullPath);
+    } else {
+      await deleteSpider(fullPath);
+    }
+    this.enableContainer();
+  }
+
   updateListDisplay() {
     const containerElement = this.shadowRoot.querySelector(".container");
     this.clearBody(containerElement);
@@ -173,15 +199,26 @@ export default class SpiderViewComponent extends HTMLElement {
       rowTemplate.querySelector("slot[name='name']").append(entry.name);
       rowTemplate.querySelector("slot[name='modified']").append(entry.modified);
       rowTemplate.querySelector("slot[name='size']").append(entry.size);
-      rowTemplate.querySelector("slot[name='sharing']").append(entry.sharing);
 
       const rowElement = document.createElement("tr");
       rowElement.appendChild(rowTemplate);
 
+      const deleteIcon = rowElement.querySelector("#delete-icon");
+      deleteIcon.addEventListener("click", (event) => {
+        this.deleteFileOrFolder(entry.name, entry.isFolder);
+      });
+
+      if (entry.isFolder) {
+        rowElement.querySelector("#file-icon").remove();
+      } else {
+        rowElement.querySelector("#folder-icon").remove();
+      }
+
       let events = ["dblclick", "touchstart"];
+      const nameElement = rowElement.querySelector("#name");
 
       events.forEach(eventName => {
-        rowElement.addEventListener(eventName, (_) => {
+        nameElement.addEventListener(eventName, (_) => {
           if(entry.isFolder) {
             if (!this.loadingFolder) {
               this.loadingFolder = true;

@@ -25,6 +25,11 @@ p {
         height: 2rem;
         width: 2rem;
     }
+
+    svg { 
+        height: 2rem;
+        width: 2rem;
+    }
 }
 
 .icons :hover {
@@ -60,7 +65,7 @@ p {
         font-size: 1.125rem;
     }
 
-    img {
+    svg {
         filter: brightness(100);
         width: 4.0625rem;
     }
