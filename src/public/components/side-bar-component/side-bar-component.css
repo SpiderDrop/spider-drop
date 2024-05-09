@@ -46,19 +46,24 @@
     position: absolute; 
     width: 100%; 
     display: flex;
-    justify-content: center; 
     align-items: center; 
     bottom: 0;
+    padding-left: 10%;
 }
 
 .sign-out-button {
-    width: 90%;
+    width: 75%;
     height: 3em;
     background-color: var(--bright-white);
-    border: 0.2em solid var(--bright-pink);
+    border: 0.1em solid var(--dark-gray-accent);
     border-radius: 1em;
     font-family: "Roboto", sans-serif;
     font-size: 1.5em;
     font-weight: 400;
     font-style: normal;
+}
+
+.sign-out :hover {
+    background-color: var(--dark-gray-accent);
+    cursor: pointer;
 }
