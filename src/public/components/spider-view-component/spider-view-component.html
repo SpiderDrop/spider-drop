@@ -5,6 +5,13 @@
     <img id="sorted-icon" src="./assets/icons/sorted-column.svg">
 </template>
 
+<template id="empty-folder-template">
+    <main class="empty-folder">
+        <img id="folder-icon" src="./assets/icons/folder.svg">
+        <p>This folder is empty</p>
+    </main>
+</template>
+
 <template id="row-template">
     <td><slot name="name"></slot></td>
     <td><slot name="modified"></slot></td>
@@ -12,7 +19,7 @@
     <td><slot name="sharing"></slot></td>
 </template>
 
-<main class="container">
+<template id="column-template">
     <table>
         <thead>
             <tr>
@@ -25,4 +32,7 @@
         <tbody>
         </tbody>
     </table>
+</template>
+
+<main class="container">
 </main>

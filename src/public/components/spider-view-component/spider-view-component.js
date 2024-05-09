@@ -54,7 +54,11 @@ export default class SpiderViewComponent extends HTMLElement {
       });
     }));
 
-    this.updateListDisplay();
+    if (this.entries.length) {
+      this.updateListDisplay();
+    } else {
+      this.showEmptyFolder();
+    }
   }
 
   removeSortedByIcon() {
@@ -85,12 +89,28 @@ export default class SpiderViewComponent extends HTMLElement {
      this.loadCurrentView();
   }
 
-  updateListDisplay() {
-    const tableBody = this.shadowRoot.querySelector("tbody");
-
-    while (tableBody.firstChild) {
-      tableBody.removeChild(tableBody.firstChild);
+  clearBody(element) {
+    while (element.hasChildNodes()) {
+      element.removeChild(element.firstChild);
     }
+  }
+
+  showEmptyFolder() {
+    const containerElement = this.shadowRoot.querySelector(".container");
+    this.clearBody(containerElement);
+
+    const emptyFolderTemplate = this.shadowRoot.getElementById("empty-folder-template");
+    containerElement.appendChild(emptyFolderTemplate.content.cloneNode(true));
+  }
+
+  updateListDisplay() {
+    const containerElement = this.shadowRoot.querySelector(".container");
+    this.clearBody(containerElement);
+
+    const columnTemplate = this.shadowRoot.getElementById("column-template");
+    containerElement.appendChild(columnTemplate.content.cloneNode(true));
+
+    const tableBody = this.shadowRoot.querySelector("tbody");
 
     const rowTemplateElement = this.shadowRoot.getElementById("row-template");
 
