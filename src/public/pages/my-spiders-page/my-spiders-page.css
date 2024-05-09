@@ -1,9 +1,3 @@
-side-bar {
-    display: block;
-    margin: 1.375rem;
-    height: 100%;
-}
-
 file-actions {
     display: block;
     margin-top: 2.5rem;
@@ -17,14 +11,4 @@ spider-view {
 
 .main-content {
     display: flex;
-}
-
-.left-pane {
-    width: 20%;
-    float: left;
-}
-
-.right-pane {
-    width: 80%;
-    float: right;
 }

@@ -9,6 +9,11 @@ export default class SearchHeaderComponent extends HTMLElement {
     super();
   }
 
+  navigateToHomePage() {
+    deleteAccessToken();
+    location.assign("/");
+  }
+
   extractInitials(fullName) {
     let initials = fullName.split(' ').map(part => part[0]).join('');
     return initials;
@@ -27,6 +32,10 @@ export default class SearchHeaderComponent extends HTMLElement {
       .getElementById("search-header-component")
       .content.cloneNode(true);
     shadow.appendChild(template);
+
+    shadow
+      .getElementById("sign-out-icon")
+      .addEventListener("click", () => this.navigateToHomePage());
 
     this.populateUsername();
   }
