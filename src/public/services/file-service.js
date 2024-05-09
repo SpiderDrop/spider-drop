@@ -35,3 +35,15 @@ export async function getPreviewUrl(path) {
 
   return response.json();
 }
+
+
+export async function uploadFiles(path, fileBlob) {
+  return fetch("/api/spiders/" + path, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/octet-stream"
+    },
+    body: fileBlob
+  });
+}

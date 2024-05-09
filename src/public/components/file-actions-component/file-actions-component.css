@@ -33,6 +33,10 @@ p {
     cursor: pointer;
 }
 
+.loading :hover {
+    cursor: wait;
+}
+
 .create-folder-container {
     display: flex;
     border: 0.125rem solid var(--blue-darker-accent);

@@ -26,12 +26,8 @@ export default class MySpidersPage extends HTMLElement {
       event.stopPropagation();
     });
 
-    shadow.addEventListener("filesUploaded", event => {
-      console.log("Files uploaded");
-
-      const spiderViewElement = this.shadowRoot.querySelector("spider-view");
-      spiderViewElement.setAttribute("refresh", "");
-
+    shadow.addEventListener("refresh", event => {
+      this.refreshFileView();
       event.stopPropagation();
     });
 
