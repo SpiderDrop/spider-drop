@@ -33,14 +33,6 @@ export default class SpiderViewComponent extends HTMLElement {
     this.loadingFolder = true;
     const fullPath = this.currentPath.slice(1).join("/");
     let currentDirectory = await fetchCurrentDirectory(fullPath);
-  
-    const dateTimeFormat = new Intl.DateTimeFormat("en", { 
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
 
     this.entries = [];
 
@@ -50,7 +42,7 @@ export default class SpiderViewComponent extends HTMLElement {
       
       this.entries.push({
         name: entity.name,
-        modified: dateTimeFormat.format(lastModified),
+        modified: lastModified.toLocaleString(),
         size: isFolder ? `${entity.Size} items` : this.formatBytes(entity.Size),
         sharing: Boolean(entity.sharing) ? "public" : "private",
         isFolder: isFolder,
