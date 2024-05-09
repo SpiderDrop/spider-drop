@@ -9,6 +9,10 @@ export default class SearchHeaderComponent extends HTMLElement {
       .getElementById("search-header-component")
       .content.cloneNode(true);
     shadow.appendChild(template);
+
+    const search = this.shadowRoot.querySelector("input");
+    
+
   }
 
   disconnectedCallback() {}
