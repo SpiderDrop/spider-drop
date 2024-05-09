@@ -21,6 +21,7 @@ export default class SidebarComponent extends HTMLElement {
     saveUsername(userInfo.name);
     this.shadowRoot.querySelector("slot[name='username']").append(userInfo.name); 
   }
+
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
     const template = document

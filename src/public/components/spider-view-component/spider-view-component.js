@@ -8,6 +8,7 @@ export default class SpiderViewComponent extends HTMLElement {
     super();
     this.currentPath = ["/"];
     this.entries = [];
+    this.loadingFolder = false;
   }
 
   navigateBackDirectories(directoryBackCount) {
@@ -29,6 +30,7 @@ export default class SpiderViewComponent extends HTMLElement {
   }
 
   async loadCurrentView() {
+    this.loadingFolder = true;
     const fullPath = this.currentPath.slice(1).join("/");
     let currentDirectory = await fetchCurrentDirectory(fullPath);
   
@@ -61,6 +63,7 @@ export default class SpiderViewComponent extends HTMLElement {
     } else {
       this.showEmptyFolder();
     }
+    this.loadingFolder = false;
   }
 
   removeSortedByIcon() {
@@ -183,22 +186,30 @@ export default class SpiderViewComponent extends HTMLElement {
       const rowElement = document.createElement("tr");
       rowElement.appendChild(rowTemplate);
 
-      rowElement.addEventListener("click", (_) => {
-        if(entry.isFolder) {
-          this.expandFolder(entry.name);
-        } else {
-          this.previewFile(entry.path)
-        }
+      let events = ["dblclick", "touchstart"];
 
-        this.dispatchEvent(new CustomEvent("folderEntered", {
-          bubbles: true, 
-          cancelable: true, 
-          composed: true,
-          detail: {
-            folderName: entry.name
+      events.forEach(eventName => {
+        rowElement.addEventListener(eventName, (_) => {
+          if(entry.isFolder) {
+            if (!this.loadingFolder) {
+              this.loadingFolder = true;
+              this.expandFolder(entry.name);
+            }
+          } else {
+            this.previewFile(entry.path)
           }
-        }));
+
+          this.dispatchEvent(new CustomEvent("folderEntered", {
+            bubbles: true, 
+            cancelable: true, 
+            composed: true,
+            detail: {
+              folderName: entry.name
+            }
+          }));
+        });
       });
+
       tableBody.appendChild(rowElement);
     });
   }
@@ -209,15 +220,6 @@ export default class SpiderViewComponent extends HTMLElement {
       .getElementById("spider-view-component")
       .content.cloneNode(true);
     shadow.appendChild(template);
-
-    const headings = this.shadowRoot.querySelectorAll("tr th");
-
-    headings.forEach(heading => {
-      heading.addEventListener("click", () => {
-        this.sortBy(heading);
-      });
-    });
-
     this.loadCurrentView();
   }
 
