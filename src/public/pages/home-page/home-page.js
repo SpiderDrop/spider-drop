@@ -1,5 +1,6 @@
 import {
   getAccessToken,
+  popPostLoginUrl,
   requestAccessToken,
   saveAccessToken
 } from "../../services/auth-service.js";
@@ -13,6 +14,15 @@ export default class HomePage extends HTMLElement {
 
   navigateToMySpidersPage() {
     location.assign("/my-spiders");
+  }
+
+  navigateToNext() {
+    const postLoginUrl = popPostLoginUrl();
+    if (postLoginUrl) {
+      location.href = postLoginUrl;
+    } else {
+      this.navigateToMySpidersPage();
+    }
   }
 
   connectedCallback() {
@@ -40,7 +50,7 @@ export default class HomePage extends HTMLElement {
         const response = await requestAccessToken(accessCode);
         if (response.ok) {
           saveAccessToken((await response.json()).access_token);
-          this.navigateToMySpidersPage();
+          this.navigateToNext();
         } else {
           // Not expecting anything to go wrong that should be reported to user.
         }

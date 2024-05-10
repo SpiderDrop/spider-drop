@@ -56,6 +56,40 @@ export async function getPreviewUrl(path) {
   return response.json();
 }
 
+export async function getSharedSpiderPreviewUrl(key) {
+  const response = await fetch(`/api/spiders/preview-url/?spiderKey=${key}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
+
+export async function setShareList(path, shareList) {
+  return fetch("/api/spiders/share-list/" + path, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(shareList),
+  });
+}
+
+export async function getShareList(path) {
+  const response = await fetch("/api/spiders/share-list/" + path, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
 
 export async function uploadFiles(path, fileBlob) {
   return fetch("/api/spiders/" + path, {

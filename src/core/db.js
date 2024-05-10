@@ -10,7 +10,7 @@
  * The MS-SQL module
  */
 
-const sql = require("mssql");
+import sql from "mssql";
 
 const config = {
     user: process.env.DB_USERNAME,
@@ -18,7 +18,7 @@ const config = {
     server: process.env.DB_SERVER,
     database: process.env.DB_NAME,
     // If you're on Windows Azure, you will need this:
-    options: { encrypt: true },
+    options: { encrypt: false },
     connectionTimeout: 5000,
     requestTimeout: 15000,
     pool: {
@@ -106,7 +106,7 @@ let input = (req) => {
  *
  * @returns {sql.Request} a decorated database request.
  */
-let db = async () => {
+export const db = async () => {
     let pool = await connectionPool();
 
     let request = await pool.request();
@@ -127,7 +127,7 @@ let db = async () => {
  *
  * @returns {sql.Transaction} a database transaction with decorated requests.
  */
-let transaction = async () => {
+export const transaction = async () => {
     let pool = await connectionPool();
     let tx = await pool.transaction();
 
@@ -160,7 +160,7 @@ let transaction = async () => {
  *   a transaction
  * @returns {Promise<*>} the result of applying the executable against a transaction
  */
-let withTransaction = async (executable) => {
+export const withTransaction = async (executable) => {
     if (executable == undefined || !(executable instanceof Function)) {
         throw new Error(
             "Callback function required to execute in a transaction"
@@ -183,11 +183,4 @@ let withTransaction = async (executable) => {
             return Promise.reject(error);
         }
     }
-};
-
-module.exports = {
-    db,
-    transaction,
-    withTransaction,
-    sql,
 };

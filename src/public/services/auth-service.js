@@ -51,3 +51,13 @@ export function saveUsername(username) {
 export function getUsername() {
   return localStorage.getItem("USER_NAME");
 }
+
+export function setPostLoginUrl(url) {
+  localStorage.setItem("POST_LOGIN_URL", url);
+}
+
+export function popPostLoginUrl() {
+  const ret = localStorage.getItem("POST_LOGIN_URL");
+  localStorage.removeItem("POST_LOGIN_URL");
+  return ret;
+}
