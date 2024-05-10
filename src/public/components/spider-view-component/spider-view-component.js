@@ -234,10 +234,11 @@ export default class SpiderViewComponent extends HTMLElement {
 
       const deleteIcon = rowElement.querySelector("#delete-icon");
       const shareIcon = rowElement.querySelector("#share-icon");
-      deleteIcon.addEventListener("click", (event) => {
+
+      deleteIcon.addEventListener("click", async (event) => {
         rowElement.remove();
-        this.deleteFileOrFolder(entry.name, entry.isFolder);
-        this.loadCurrentView();
+        await this.deleteFileOrFolder(entry.name, entry.isFolder);
+        return this.loadCurrentView();
       });
 
       if(entry.isFolder) {

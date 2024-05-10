@@ -117,7 +117,7 @@ export default class FileActionsComponent extends HTMLElement {
     this.dispatchEvent(uploadedFileEvent);
   }
 
-  onUploadFile() {
+  async onUploadFile() {
     const uploadFileDialog = this.shadowRoot.getElementById(
       "upload-file-dialog"
     );
@@ -137,7 +137,7 @@ export default class FileActionsComponent extends HTMLElement {
       promises.push(fetchPromise);
     });
 
-    Promise.all(promises);
+    await Promise.all(promises);
     uploadFileDialog.disabled = false;
     document.body.style.cursor = "pointer"
     this.refreshView();
