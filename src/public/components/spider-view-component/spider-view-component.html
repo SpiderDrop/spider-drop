@@ -31,6 +31,10 @@
             the spider</a> instead.</p>
 </template>
 
+<template id="no-spider-access-template">
+    <p id="no-spider-access">We cannot preview this spider. You might not have access to view it. Please double check access with sharer.</p>
+</template>
+
 <template id="image-preview-template">
     <img class="round-corners" id="image-preview" alt />
 </template>
@@ -44,11 +48,23 @@
                 <th scope="col" id="modified">Uploaded</th>
                 <th scope="col" id="size">Size</th>
                 <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
+</template>
+
+<template id="share-list-editor-template">
+    <article id="share-list-editor">
+        <h2>Share List for <slot name="name"></slot></h2>
+        <textarea id="share-list-editor-input" placeholder="Enter the emails to share this spider with. Put each email in its own line."></textarea>
+        <section>
+            <button id="share-list-editor-cancel" type="button">Cancel</button>
+            <button id="share-list-editor-save" type="button">Save Share List</button>
+        </section>
+    </article>
 </template>
 
 <template id="row-template">
@@ -66,6 +82,9 @@
     <td>
         <img id="delete-icon" src="./assets/icons/delete.svg">
     </td>
+    <td>
+        <img id="share-icon" src="./assets/icons/share.svg">
+    </td>    
 </template>
 
 <main class="container">

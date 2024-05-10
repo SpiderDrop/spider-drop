@@ -1,4 +1,4 @@
-import { fetchCurrentDirectory, getPreviewUrl, deleteBox, deleteSpider } from "../../services/file-service.js";
+import { fetchCurrentDirectory, getPreviewUrl, deleteBox, deleteSpider, setShareList, getShareList, getSharedSpiderPreviewUrl } from "../../services/file-service.js";
 import { getFileType } from "../../services/file-types-service.js";
 
 export default class SpiderViewComponent extends HTMLElement {
@@ -94,6 +94,33 @@ export default class SpiderViewComponent extends HTMLElement {
     }
   }
 
+  async showShareListEditor(name) {
+    const fullPath = this.currentPath.slice(1).join("/") + `/${name}`.replace("/", "");
+
+    const containerElement = this.shadowRoot.querySelector(".container");
+    this.clearBody(containerElement);
+
+    const shareListEditorElement = this.shadowRoot.getElementById("share-list-editor-template").content.cloneNode(true);
+    shareListEditorElement.querySelector("slot[name='name']").append(name);
+
+    const textInput = shareListEditorElement.getElementById("share-list-editor-input");
+    textInput.value = (await getShareList(fullPath)).join("\n");
+
+    shareListEditorElement.getElementById("share-list-editor-cancel").addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.loadCurrentView();
+    });
+
+    shareListEditorElement.getElementById("share-list-editor-save").addEventListener("click", async (e) => {
+      e.stopPropagation();
+      const shareList = textInput.value.split("\n").filter(el => el.trim().length !== 0);
+      await setShareList(fullPath, shareList);
+      return this.loadCurrentView();
+    });
+
+    containerElement.appendChild(shareListEditorElement);    
+  }
+
   showEmptyFolder() {
     const containerElement = this.shadowRoot.querySelector(".container");
     this.clearBody(containerElement);
@@ -102,18 +129,22 @@ export default class SpiderViewComponent extends HTMLElement {
     containerElement.appendChild(emptyFolderTemplate.content.cloneNode(true));
   }
 
-  async previewFile(path) {
-    const previewUrl = await getPreviewUrl(path);
-    const fileType = getFileType(path);
+  async previewFile(path, isAbsolutePath=false) {
+    const previewUrl = await (isAbsolutePath ? getSharedSpiderPreviewUrl(path) : getPreviewUrl(path));
+    if(previewUrl.url) {
+      const fileType = getFileType(path);
     
-    if(fileType === "images") {
-      this.showImagePreview(previewUrl.url);
-    } else if(fileType === "videos") {
-      this.showVideoPreview(previewUrl.url);
-    } else if(fileType === "audio") {
-      this.showAudioPreview(previewUrl.url);
+      if(fileType === "images") {
+        this.showImagePreview(previewUrl.url);
+      } else if(fileType === "videos") {
+        this.showVideoPreview(previewUrl.url);
+      } else if(fileType === "audio") {
+        this.showAudioPreview(previewUrl.url);
+      } else {
+        this.showDefaultPreview(previewUrl.url);
+      }
     } else {
-      this.showDefaultPreview(previewUrl.url);
+      this.showNoAccessErrorMessage();
     }
   }
 
@@ -159,6 +190,15 @@ export default class SpiderViewComponent extends HTMLElement {
     containerElement.appendChild(defaultPreviewElement);
   }
 
+  showNoAccessErrorMessage() {
+    const containerElement = this.shadowRoot.querySelector(".container");
+    this.clearBody(containerElement);
+
+    const noAccessErrorNode = this.shadowRoot.getElementById("no-spider-access-template").content.cloneNode(true);
+    const noAccessErrorElement = noAccessErrorNode.getElementById("no-spider-access");
+    containerElement.appendChild(noAccessErrorElement);
+  }
+
   async deleteFileOrFolder(name, isFolder) {
     const fullPath = this.currentPath.slice(1).join("/") + `/${name}`;
 
@@ -190,11 +230,20 @@ export default class SpiderViewComponent extends HTMLElement {
       rowElement.appendChild(rowTemplate);
 
       const deleteIcon = rowElement.querySelector("#delete-icon");
+      const shareIcon = rowElement.querySelector("#share-icon");
       deleteIcon.addEventListener("click", (event) => {
         rowElement.remove();
         this.deleteFileOrFolder(entry.name, entry.isFolder);
         this.loadCurrentView();
       });
+
+      if(entry.isFolder) {
+        shareIcon.remove();
+      } else {
+        shareIcon.addEventListener("click", async () => {
+          return this.showShareListEditor(entry.name)
+        })
+      }
 
       if (entry.isFolder) {
         rowElement.querySelector("#file-icon").remove();
@@ -237,7 +286,14 @@ export default class SpiderViewComponent extends HTMLElement {
       .getElementById("spider-view-component")
       .content.cloneNode(true);
     shadow.appendChild(template);
-    this.loadCurrentView();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const fl = urlParams.get('fl');
+    if(fl) {
+      this.previewFile(fl, true);
+    } else {
+      this.loadCurrentView();
+    }
   }
 
   disconnectedCallback() {}

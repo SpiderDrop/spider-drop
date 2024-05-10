@@ -1,4 +1,4 @@
-import { getAccessToken } from "../../services/auth-service.js"
+import { getAccessToken, setPostLoginUrl } from "../../services/auth-service.js"
 
 export default class MySpidersPage extends HTMLElement {
   navigateBack(offset) {
@@ -44,6 +44,12 @@ export default class MySpidersPage extends HTMLElement {
         event.stopPropagation();
       });
     } else {
+      const urlParams = new URLSearchParams(window.location.search);
+      const fl = urlParams.get('fl');
+      if(fl) {
+        setPostLoginUrl(location.href);
+      }
+      
       location.assign("/");
     }
   }
