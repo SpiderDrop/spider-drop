@@ -2,6 +2,7 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
+    container: container / inline-size;
 }
 
 .title {
@@ -48,6 +49,7 @@ p {
     border: 0.125rem solid var(--blue-darker-accent);
     border-radius: 2rem;
     background-color: var(--bright-white);
+    align-items: center;
 
     > * {
         height: 2.3125rem;
@@ -75,4 +77,12 @@ p {
 
 .breadcrumb-item {
     cursor: pointer;
+}
+
+@container container (max-width: 31.25rem) {
+    .create-folder-container {
+        input {
+            font-size: 0.70rem;
+        }
+    }
 }
