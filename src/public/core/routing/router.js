@@ -54,7 +54,9 @@ export default class Router extends HTMLElement {
       template.id = component;
 
       fetch(templateUrl).then(response => response.text()).then(response => {
-        template.innerHTML = response;
+        const html = new DOMParser().parseFromString(response, "text/html");
+        template.content.appendChild(html.firstElementChild);
+
         this.outlet.appendChild(template);
         this.outlet.appendChild(view);
       });

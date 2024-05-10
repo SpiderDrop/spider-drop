@@ -20,7 +20,10 @@ function addImports() {
       .then(response => {
         let template = document.createElement("template");
         template.id = componentName;
-        template.innerHTML = response;
+
+        const html = new DOMParser().parseFromString(response, "text/html");
+        template.content.appendChild(html.firstElementChild);
+
         document.head.appendChild(template);
       });
   };
@@ -33,5 +36,5 @@ function addImports() {
   }
 }
 
-getConfig(); // Load Config
+getConfig();
 addImports();
