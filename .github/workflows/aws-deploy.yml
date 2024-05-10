@@ -49,7 +49,7 @@ jobs:
       - name: Package artifact
         run: |
           ls -alh 
-          zip -r site.zip * .env
+          zip -r site.zip * .env .platform
 
       - name: Upload artifact to S3
         run: aws s3 cp site.zip s3://${{ secrets.AWS_BUCKET_NAME }}/application-${{ github.run_id }}.zip
