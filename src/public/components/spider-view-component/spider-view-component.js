@@ -95,7 +95,10 @@ export default class SpiderViewComponent extends HTMLElement {
   }
 
   async showShareListEditor(name) {
-    const fullPath = this.currentPath.slice(1).join("/") + `/${name}`.replace("/", "");
+    let fullPath = this.currentPath.slice(1).join("/") + `/${name}`;
+    if(fullPath.startsWith("/")) {
+      fullPath = fullPath.replace("/", "");
+    }
 
     const containerElement = this.shadowRoot.querySelector(".container");
     this.clearBody(containerElement);
