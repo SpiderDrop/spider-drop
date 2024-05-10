@@ -24,6 +24,23 @@ export async function addBox(path) {
   });
 }
 
+export async function filteredContent(filter) {
+  const response = await fetch(
+    "/api/search?" +
+      new URLSearchParams({
+        filter: filter
+      }),
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+  return response.json();
+}
 export async function deleteBox(path) {
   return fetch("/api/boxes/" + path, {
     method: "DELETE",

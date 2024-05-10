@@ -1,4 +1,4 @@
-import { fetchCurrentDirectory, getPreviewUrl, deleteBox, deleteSpider, setShareList, getShareList, getSharedSpiderPreviewUrl } from "../../services/file-service.js";
+import { fetchCurrentDirectory, getPreviewUrl, deleteBox, deleteSpider, setShareList, getShareList, getSharedSpiderPreviewUrl, filteredContent } from "../../services/file-service.js";
 import { getFileType } from "../../services/file-types-service.js";
 
 export default class SpiderViewComponent extends HTMLElement {
@@ -25,12 +25,21 @@ export default class SpiderViewComponent extends HTMLElement {
     if (name === "offset") {
       this.navigateBackDirectories(Number(newValue));
     }
+    if (name === "search") {
+      this.loadCurrentView(newValue);
+    }
   }
 
-  async loadCurrentView() {
-    this.loadingFolder = true;
+  async search(spider) {
+    return await filteredContent(spider);
+  }
+
+  async loadCurrentView(search = "") {
     const fullPath = this.currentPath.slice(1).join("/");
-    let currentDirectory = await fetchCurrentDirectory(fullPath);
+    let currentDirectory = search
+      ? await this.search(search)
+      : await fetchCurrentDirectory(fullPath);
+
     const dateOptions = {
       weekday: "short", 
       year: "numeric", 
@@ -39,10 +48,10 @@ export default class SpiderViewComponent extends HTMLElement {
     };
     this.entries = [];
 
-    currentDirectory.forEach((entity => {
+    currentDirectory.forEach((entity) => {
       const isFolder = Boolean(entity.isBox);
       const lastModified = new Date(entity.LastModified);
-      
+
       this.entries.push({
         name: entity.name,
         modified: lastModified.toLocaleString("en-US", dateOptions),
@@ -50,7 +59,7 @@ export default class SpiderViewComponent extends HTMLElement {
         isFolder: isFolder,
         path: entity.path
       });
-    }));
+    });
 
     if (this.entries.length) {
       this.updateListDisplay();
@@ -74,7 +83,7 @@ export default class SpiderViewComponent extends HTMLElement {
     headingElement.appendChild(sortedIconTemplate.content.cloneNode(true));
     const heading = headingElement.id;
 
-    this.entries.sort(function(a, b) {
+    this.entries.sort(function (a, b) {
       if (a[heading] < b[heading]) return -1;
 
       return a[heading] > b[heading] ? 1 : 0;
@@ -84,8 +93,8 @@ export default class SpiderViewComponent extends HTMLElement {
   }
 
   expandFolder(folderName) {
-     this.currentPath.push(folderName);
-     this.loadCurrentView();
+    this.currentPath.push(folderName);
+    this.loadCurrentView();
   }
 
   clearBody(element) {
@@ -128,7 +137,9 @@ export default class SpiderViewComponent extends HTMLElement {
     const containerElement = this.shadowRoot.querySelector(".container");
     this.clearBody(containerElement);
 
-    const emptyFolderTemplate = this.shadowRoot.getElementById("empty-folder-template");
+    const emptyFolderTemplate = this.shadowRoot.getElementById(
+      "empty-folder-template"
+    );
     containerElement.appendChild(emptyFolderTemplate.content.cloneNode(true));
   }
 
@@ -223,7 +234,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const rowTemplateElement = this.shadowRoot.getElementById("row-template");
 
-    this.entries.forEach(entry => {
+    this.entries.forEach((entry) => {
       const rowTemplate = rowTemplateElement.content.cloneNode(true);
       rowTemplate.querySelector("slot[name='name']").append(entry.name);
       rowTemplate.querySelector("slot[name='modified']").append(entry.modified);

@@ -32,6 +32,20 @@ export default class SearchHeaderComponent extends HTMLElement {
       .getElementById("search-header-component")
       .content.cloneNode(true);
     shadow.appendChild(template);
+    const search = this.shadowRoot.getElementById("input");
+
+    search.addEventListener("change", (event) => {
+      this.dispatchEvent(
+        new CustomEvent("searchInput", {
+          composed: true,
+          bubbles: true,
+          cancelable: true,
+          detail: {
+            search: event.target.value
+          }
+        })
+      );
+    });
 
     shadow
       .getElementById("sign-out-icon")
