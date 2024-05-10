@@ -1,3 +1,8 @@
+.container {
+    container-type: inline-size;
+    container-name: container;
+}
+
 file-actions {
     display: block;
     margin-top: 2.5rem;
@@ -17,4 +22,11 @@ spider-view {
 
 .section-content {
     width: 70%;
+}
+
+@container container (max-width: 43.75rem) {
+    .section-content {
+        width: 100%;
+        font-size: 1rem;
+    }
 }
