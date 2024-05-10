@@ -10,10 +10,10 @@ spidersRouter.use(getKeyMiddleware);
 
 spidersRouter.get("/preview-url/*", async (req, res) => {
   const key = res.locals.key.replace("preview-url/", "");
-  const sharedSpiderKey = req.query.spiderKey ? encodeURI(req.query.spiderKey) : undefined;
+  const sharedSpiderKey = encodeURI(req.query.spiderKey);
 
   let spiderAbsoluteKey;
-  if (sharedSpiderKey) {
+  if (req.query.spiderKey) {
     if (await isInSpiderShareList(sharedSpiderKey, res.locals.email)) {
       spiderAbsoluteKey = sharedSpiderKey;
     } else {
