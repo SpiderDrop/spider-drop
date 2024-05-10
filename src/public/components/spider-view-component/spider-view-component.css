@@ -12,6 +12,12 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    height: 70vh;
+    overflow-y: scroll;
+}
+
+.loading {
+    cursor: wait;
 }
 
 table {
@@ -29,19 +35,34 @@ thead {
 }
 
 thead th:nth-child(1) {
-    width: 30%;
+    width: 5%;
 }
 
 thead th:nth-child(2) {
-    width: 25%;
+    width: 50%;
 }
 
 thead th:nth-child(3) {
-    width: 15%;
+    width: 25%;
 }
 
 thead th:nth-child(4) {
-    width: 30%;
+    width: 10%;
+}
+
+thead th:nth-child(5) {
+    width: 5%;
+}
+
+thead th:nth-child(6) {
+    width: 5%;
+}
+
+td {
+    img {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
 }
 
 tr {
@@ -63,4 +84,11 @@ tbody {
 
 .round-corners {
     border-radius: var(--app-border-radius);
+}
+
+#share-list-editor {
+    textarea {
+        min-height: 80%;
+        min-width: 100%;
+    }
 }
