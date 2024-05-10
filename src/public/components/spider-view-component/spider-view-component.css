@@ -6,6 +6,7 @@
 }
 
 .container {
+    container: container / inline-size;
     background-color: var(--light-white);
     border-radius: 1.125rem;
     padding: 0.25rem 1rem;
@@ -35,27 +36,27 @@ thead {
 }
 
 thead th:nth-child(1) {
-    width: 5%;
+    width: 1.5rem;
 }
 
 thead th:nth-child(2) {
-    width: 50%;
+    width: 45%;
 }
 
 thead th:nth-child(3) {
-    width: 25%;
+    width: 30%;
 }
 
 thead th:nth-child(4) {
-    width: 10%;
+    width: 25%;
 }
 
 thead th:nth-child(5) {
-    width: 5%;
+    width: 1.5rem;
 }
 
 thead th:nth-child(6) {
-    width: 5%;
+    width: 1.5rem;
 }
 
 td {
@@ -90,5 +91,16 @@ tbody {
     textarea {
         min-height: 80%;
         min-width: 100%;
+    }
+}
+
+@container container (max-width: 37.5rem) {
+    tr {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    td {
+        font-size: 0.75rem;
     }
 }
