@@ -39,6 +39,13 @@ jobs:
           envkey_AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
           envkey_MAX_UPLOAD_SIZE: ${{ secrets.MAX_UPLOAD_SIZE }}
           envkey_PREVIEW_URL_LIFETIME_SECONDS: ${{ secrets.PREVIEW_URL_LIFETIME_SECONDS }}
+          envkey_SPIDER_SHARE_LINK_PREFIX: ${{ secrets.SPIDER_SHARE_LINK_PREFIX }}
+          envkey_SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          envkey_SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          envkey_SMTP_USER: ${{ secrets.SMTP_USER }}
+          envkey_SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          envkey_SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          envkey_DB_NAME: ${{ secrets.DB_NAME}}
       - name: Package artifact
         run: |
           ls -alh 
