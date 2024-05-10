@@ -10,7 +10,7 @@ spidersRouter.use(getKeyMiddleware);
 
 spidersRouter.get("/preview-url/*", async (req, res) => {
   const key = res.locals.key.replace("preview-url/", "");
-  const sharedSpiderKey = encodeURI(req.query.spiderKey);
+  const sharedSpiderKey = req.query.spiderKey ? encodeURI(req.query.spiderKey) : undefined;
 
   let spiderAbsoluteKey;
   if (sharedSpiderKey) {
