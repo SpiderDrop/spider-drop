@@ -23,7 +23,7 @@ app.use("/config.json", configRouter);
 app.use(
   express.raw({
     type: "application/octet-stream",
-    limit: process.env.MAX_UPLOAD_SIZE || "1mb",
+    limit: process.env.MAX_UPLOAD_SIZE || "500mb",
   })
 );
 
