@@ -39,7 +39,7 @@ thead th:nth-child(1) {
 }
 
 thead th:nth-child(2) {
-    width: 55%;
+    width: 50%;
 }
 
 thead th:nth-child(3) {
@@ -51,6 +51,10 @@ thead th:nth-child(4) {
 }
 
 thead th:nth-child(5) {
+    width: 5%;
+}
+
+thead th:nth-child(6) {
     width: 5%;
 }
 
@@ -80,4 +84,11 @@ tbody {
 
 .round-corners {
     border-radius: var(--app-border-radius);
+}
+
+#share-list-editor {
+    textarea {
+        min-height: 80%;
+        min-width: 100%;
+    }
 }
