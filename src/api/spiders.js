@@ -73,7 +73,7 @@ spidersRouter.put("/share-list/*", async (req, res) => {
 
 spidersRouter.put("/*", async (req, res) => {
   if (res.locals.key.length === 0) {
-    res.status(400).json({ message: "Cannot create an unnamed box." });
+    res.status(400).json({ message: "Cannot create an unnamed spider." });
   } else {
     await putObject(
       req.body,
