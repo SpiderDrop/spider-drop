@@ -1,3 +1,6 @@
+import { config as dotEnvConfig } from "dotenv";
+dotEnvConfig();
+
 /**
  *
  * Module containing database related utility functions
