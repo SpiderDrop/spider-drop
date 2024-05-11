@@ -39,7 +39,7 @@ export default class SpiderViewComponent extends HTMLElement {
     };
     this.entries = [];
 
-    currentDirectory.forEach((entity => {
+    for (let entity of currentDirectory) {
       const isFolder = Boolean(entity.isBox);
       const lastModified = new Date(entity.LastModified);
       
@@ -50,13 +50,14 @@ export default class SpiderViewComponent extends HTMLElement {
         isFolder: isFolder,
         path: entity.path
       });
-    }));
+    }
 
     if (this.entries.length) {
       this.updateListDisplay();
     } else {
       this.showEmptyFolder();
     }
+
     this.loadingFolder = false;
   }
 
@@ -217,9 +218,9 @@ export default class SpiderViewComponent extends HTMLElement {
     }
   }
 
-  addRowEvents(rowElement) {
+  addRowEvents(rowElement, entry) {
       let events = ["dblclick", "touchstart"];
-      const nameElement = rowElement.querySelector("#name");
+      const nameElement = rowElement.querySelector("slot[name='name']");
 
       for (let event of events) {
         nameElement.addEventListener(event, (_) => {
@@ -244,47 +245,56 @@ export default class SpiderViewComponent extends HTMLElement {
 
   updateListDisplay() {
     const containerElement = this.shadowRoot.querySelector(".container");
+    const tableElement = this.shadowRoot.getElementById("table").content.cloneNode(true);
+    const tableMainElement = tableElement.querySelector("main");
+
     this.clearBody(containerElement);
 
-    const columnTemplate = this.shadowRoot.getElementById("column-template");
-    containerElement.appendChild(columnTemplate.content.cloneNode(true));
+    const entryTemplate = this.shadowRoot.getElementById("row-entry");
+    const headings = entryTemplate.content.cloneNode(true);
 
-    const tableBody = this.shadowRoot.querySelector("tbody");
+    headings.querySelector("slot[name='name']").append("Name");
+    headings.querySelector("slot[name='modified']").append("Modified");
+    headings.querySelector("slot[name='size']").append("Size");
 
-    const rowTemplateElement = this.shadowRoot.getElementById("row-template");
+    headings.querySelector("#folder-icon").style.visibility = "hidden";
+    headings.querySelector("#file-icon").style.visibility = "hidden";
+    headings.querySelector("#delete-icon").style.visibility = "hidden";
+    headings.querySelector("#share-icon").style.visibility = "hidden";
+    headings.querySelector("#folder-icon").remove();
 
-    for (let entry of entries) {
-      const rowTemplate = rowTemplateElement.content.cloneNode(true);
+    tableMainElement.appendChild(headings);
 
-      rowTemplate.querySelector("slot[name='name']").append(entry.name);
-      rowTemplate.querySelector("slot[name='modified']").append(entry.modified);
-      rowTemplate.querySelector("slot[name='size']").append(entry.size);
+    for (let entry of this.entries) {
+      const rowEntry = entryTemplate.content.cloneNode(true);
 
-      const rowElement = document.createElement("tr");
-      rowElement.appendChild(rowTemplate);
+      rowEntry.querySelector("slot[name='name']").append(entry.name);
+      rowEntry.querySelector("slot[name='modified']").append(entry.modified);
+      rowEntry.querySelector("slot[name='size']").append(entry.size);
 
-      const deleteIcon = rowElement.querySelector("#delete-icon");
-      const shareIcon = rowElement.querySelector("#share-icon");
+      const deleteIcon = rowEntry.querySelector("#delete-icon");
+      const shareIcon = rowEntry.querySelector("#share-icon");
 
       deleteIcon.addEventListener("click", async (event) => {
-        rowElement.remove();
         await this.deleteFileOrFolder(entry.name, entry.isFolder);
         return this.loadCurrentView();
       });
 
       if(entry.isFolder) {
-        shareIcon.remove();
-        rowElement.querySelector("#file-icon").remove();
+        shareIcon.style.visibility = "hidden";
+        rowEntry.querySelector("#file-icon").remove();
       } else {
         shareIcon.addEventListener("click", async () => {
           return this.showShareListEditor(entry.name)
         });
-        rowElement.querySelector("#folder-icon").remove();
+        rowEntry.querySelector("#folder-icon").remove();
       }
 
-      this.addRowEvents(rowElement);
-      tableBody.appendChild(rowElement);
+      this.addRowEvents(rowEntry, entry);
+      tableMainElement.appendChild(rowEntry);
     }
+
+    containerElement.appendChild(tableMainElement);
   }
 
   connectedCallback() {
