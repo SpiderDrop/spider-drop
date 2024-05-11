@@ -253,7 +253,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const rowTemplateElement = this.shadowRoot.getElementById("row-template");
 
-    for (let entry of entries) {
+    for (let entry of this.entries) {
       const rowTemplate = rowTemplateElement.content.cloneNode(true);
 
       rowTemplate.querySelector("slot[name='name']").append(entry.name);
