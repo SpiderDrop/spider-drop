@@ -1,4 +1,5 @@
 import { match } from "/core/routing/util.js";
+import { copyAllChildren } from "../loader/loader.js";
 
 export default class Router extends HTMLElement {
   constructor() {
@@ -55,7 +56,9 @@ export default class Router extends HTMLElement {
 
       fetch(templateUrl).then(response => response.text()).then(response => {
         const html = new DOMParser().parseFromString(response, "text/html");
-        template.content.appendChild(html.firstElementChild);
+
+        copyAllChildren(html.head, template.content);
+        copyAllChildren(html.body, template.content);
 
         this.outlet.appendChild(template);
         this.outlet.appendChild(view);

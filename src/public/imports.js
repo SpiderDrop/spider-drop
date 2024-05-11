@@ -1,4 +1,5 @@
 import { getConfig } from "./services/config-services.js";
+import { copyAllChildren } from "./core/loader/loader.js";
 
 let scriptImports = [
   // Component Imports
@@ -22,7 +23,9 @@ function addImports() {
         template.id = componentName;
 
         const html = new DOMParser().parseFromString(response, "text/html");
-        template.content.appendChild(html.firstElementChild);
+
+        copyAllChildren(html.head, template.content);
+        copyAllChildren(html.body, template.content);
 
         document.head.appendChild(template);
       });
