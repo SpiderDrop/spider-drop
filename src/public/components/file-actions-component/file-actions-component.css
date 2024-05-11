@@ -8,6 +8,7 @@
 .title {
     font-size: 1.5rem;
     font-weight: 500;
+    align-self: center;
 }
 
 p {
@@ -50,6 +51,7 @@ p {
     border-radius: 2rem;
     background-color: var(--bright-white);
     align-items: center;
+    max-height: 2.5rem;
 
     > * {
         height: 2.3125rem;
@@ -82,10 +84,14 @@ p {
     cursor: pointer;
 }
 
-@container container (max-width: 31.25rem) {
+@container container (max-width: 28.125rem) {
     .create-folder-container {
         input {
             font-size: 0.70rem;
         }
+    }
+
+    .title {
+        font-size: 1.1rem;
     }
 }

@@ -46,6 +46,7 @@ export default class MySpidersPage extends HTMLElement {
     } else {
       const urlParams = new URLSearchParams(window.location.search);
       const fl = urlParams.get('fl');
+
       if(fl) {
         setPostLoginUrl(location.href);
       }

@@ -122,8 +122,6 @@ export default class FileActionsComponent extends HTMLElement {
       "upload-file-dialog"
     );
 
-    const container = this.shadowRoot.getElementById("upload-file");
-
     uploadFileDialog.disabled = true;
     document.body.style.cursor = "wait";
     
@@ -132,12 +130,13 @@ export default class FileActionsComponent extends HTMLElement {
     let currentPath = this.navigationPath.slice(1).join("/");
     let promises = [];
 
-    uploadedFiles.forEach((file) => {
+    for (let file of uploadedFiles) {
       let fetchPromise = uploadFiles(currentPath + `/${file.name}`, file);
       promises.push(fetchPromise);
-    });
+    }
 
     await Promise.all(promises);
+
     uploadFileDialog.disabled = false;
     document.body.style.cursor = "pointer"
     this.refreshView();
