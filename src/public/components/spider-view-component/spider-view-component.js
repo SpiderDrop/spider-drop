@@ -229,7 +229,7 @@ export default class SpiderViewComponent extends HTMLElement {
   }
 
   addRowEvents(rowElement, entry) {
-      let events = ["dblclick", "touchstart"];
+      let events = ["click"];
       const nameElement = rowElement.querySelector("slot[name='name']");
 
       for (let event of events) {

@@ -38,6 +38,18 @@
     grid-template-columns: 1.5rem 50fr 25fr 25fr 1.5rem 1.5rem;
     grid-auto-flow: row;
     align-items: center;
+
+    p {
+        margin: 2px;
+    }
+
+    :hover {
+        cursor: pointer;
+    }
+}
+
+.listing-name:hover {
+    text-decoration: underline;
 }
 
 .round-corners {

@@ -47,15 +47,9 @@
 <template id="row-entry">
     <img id="folder-icon" src="./assets/icons/folder.svg">
     <img id="file-icon" src="./assets/icons/file.svg">
-    <section>
-        <slot name="name"></slot>
-    </section>
-    <section>
-        <slot name="modified"></slot>
-    </section>
-    <section>
-        <slot name="size"></slot>
-    </section>
+    <p class="listing-name"><slot name="name"></slot></p>
+    <p><slot name="modified"></slot></p>
+    <p><slot name="size"></slot></p>
     <img id="delete-icon" src="./assets/icons/delete.svg">
     <img id="share-icon" src="./assets/icons/share.svg">
 </template>
