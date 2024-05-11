@@ -22,9 +22,14 @@
     overflow-y: auto;
 }
 
-img {
+#folder-icon, #file-icon, #delete-icon, #share-icon {
     width: 1.5rem;
     height: 1.5rem;
+}
+
+.loading {
+    width: 40%;
+    align-self: center;
 }
 
 .table-row {

@@ -29,6 +29,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
   async loadCurrentView() {
     this.loadingFolder = true;
+    this.showLoading();
     const fullPath = this.currentPath.slice(1).join("/");
     let currentDirectory = await fetchCurrentDirectory(fullPath);
     const dateOptions = {
@@ -134,6 +135,7 @@ export default class SpiderViewComponent extends HTMLElement {
   }
 
   async previewFile(path, isAbsolutePath=false) {
+    this.showLoading();
     const previewUrl = await (isAbsolutePath ? getSharedSpiderPreviewUrl(path) : getPreviewUrl(path));
     if(previewUrl.url) {
       const fileType = getFileType(path);
@@ -161,6 +163,14 @@ export default class SpiderViewComponent extends HTMLElement {
 
     imageElement.src = previewUrl;
     containerElement.appendChild(imageElement);    
+  }
+
+  showLoading() {
+    const containerElement = this.shadowRoot.querySelector(".container");
+    this.clearBody(containerElement);
+
+    const loadingElement = this.shadowRoot.getElementById("loading-template").content.cloneNode(true);
+    containerElement.appendChild(loadingElement);    
   }
 
   showVideoPreview(previewUrl) {
@@ -276,6 +286,7 @@ export default class SpiderViewComponent extends HTMLElement {
       const shareIcon = rowEntry.querySelector("#share-icon");
 
       deleteIcon.addEventListener("click", async (event) => {
+        this.showLoading();
         await this.deleteFileOrFolder(entry.name, entry.isFolder);
         return this.loadCurrentView();
       });
