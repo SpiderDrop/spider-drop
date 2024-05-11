@@ -157,6 +157,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const imagePreviewNode = this.shadowRoot.getElementById("image-preview-template").content.cloneNode(true);
     const imageElement = imagePreviewNode.getElementById("image-preview");
+
     imageElement.src = previewUrl;
     containerElement.appendChild(imageElement);    
   }
@@ -167,6 +168,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const videoPreviewNode = this.shadowRoot.getElementById("video-preview-template").content.cloneNode(true);
     const videoElement = videoPreviewNode.getElementById("video-preview");
+
     videoElement.src = previewUrl;
     videoElement.getElementsByTagName("a")[0].href = previewUrl;
     containerElement.appendChild(videoElement);
@@ -178,6 +180,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const audioPreviewNode = this.shadowRoot.getElementById("audio-preview-template").content.cloneNode(true);
     const audioElement = audioPreviewNode.getElementById("audio-preview");
+
     audioElement.src = previewUrl;
     audioElement.getElementsByTagName("a")[0].href = previewUrl;
     containerElement.appendChild(audioElement);
@@ -189,6 +192,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const defaultPreviewNode = this.shadowRoot.getElementById("default-preview-template").content.cloneNode(true);
     const defaultPreviewElement = defaultPreviewNode.getElementById("default-preview");
+
     defaultPreviewElement.getElementsByTagName("a")[0].href = previewUrl;
     containerElement.appendChild(defaultPreviewElement);
   }
@@ -199,6 +203,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const noAccessErrorNode = this.shadowRoot.getElementById("no-spider-access-template").content.cloneNode(true);
     const noAccessErrorElement = noAccessErrorNode.getElementById("no-spider-access");
+
     containerElement.appendChild(noAccessErrorElement);
   }
 
@@ -212,6 +217,31 @@ export default class SpiderViewComponent extends HTMLElement {
     }
   }
 
+  addRowEvents(rowElement) {
+      let events = ["dblclick", "touchstart"];
+      const nameElement = rowElement.querySelector("#name");
+
+      for (let event of events) {
+        nameElement.addEventListener(event, (_) => {
+          if(entry.isFolder && !this.loadingFolder) {
+              this.loadingFolder = true;
+              this.expandFolder(entry.name);
+          } else {
+            this.previewFile(entry.path)
+          }
+
+          this.dispatchEvent(new CustomEvent("folderEntered", {
+            bubbles: true, 
+            cancelable: true, 
+            composed: true,
+            detail: {
+              folderName: entry.name
+            }
+          }));
+        });
+      }
+  }
+
   updateListDisplay() {
     const containerElement = this.shadowRoot.querySelector(".container");
     this.clearBody(containerElement);
@@ -223,8 +253,9 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const rowTemplateElement = this.shadowRoot.getElementById("row-template");
 
-    this.entries.forEach(entry => {
+    for (let entry of entries) {
       const rowTemplate = rowTemplateElement.content.cloneNode(true);
+
       rowTemplate.querySelector("slot[name='name']").append(entry.name);
       rowTemplate.querySelector("slot[name='modified']").append(entry.modified);
       rowTemplate.querySelector("slot[name='size']").append(entry.size);
@@ -243,45 +274,17 @@ export default class SpiderViewComponent extends HTMLElement {
 
       if(entry.isFolder) {
         shareIcon.remove();
+        rowElement.querySelector("#file-icon").remove();
       } else {
         shareIcon.addEventListener("click", async () => {
           return this.showShareListEditor(entry.name)
-        })
-      }
-
-      if (entry.isFolder) {
-        rowElement.querySelector("#file-icon").remove();
-      } else {
+        });
         rowElement.querySelector("#folder-icon").remove();
       }
 
-      let events = ["dblclick", "touchstart"];
-      const nameElement = rowElement.querySelector("#name");
-
-      events.forEach(eventName => {
-        nameElement.addEventListener(eventName, (_) => {
-          if(entry.isFolder) {
-            if (!this.loadingFolder) {
-              this.loadingFolder = true;
-              this.expandFolder(entry.name);
-            }
-          } else {
-            this.previewFile(entry.path)
-          }
-
-          this.dispatchEvent(new CustomEvent("folderEntered", {
-            bubbles: true, 
-            cancelable: true, 
-            composed: true,
-            detail: {
-              folderName: entry.name
-            }
-          }));
-        });
-      });
-
+      this.addRowEvents(rowElement);
       tableBody.appendChild(rowElement);
-    });
+    }
   }
 
   connectedCallback() {
@@ -293,6 +296,7 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const urlParams = new URLSearchParams(window.location.search);
     const fl = urlParams.get('fl');
+
     if(fl) {
       this.previewFile(fl, true);
     } else {
