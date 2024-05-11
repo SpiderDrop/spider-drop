@@ -131,7 +131,12 @@ export default class FileActionsComponent extends HTMLElement {
     let promises = [];
 
     for (let file of uploadedFiles) {
-      let fetchPromise = uploadFiles(currentPath + `/${file.name}`, file);
+      let filePath = `${currentPath}/${file.name}`;
+      if(filePath.startsWith("/")) {
+        filePath = filePath.replace("/", "");
+      }
+
+      const fetchPromise = uploadFiles(filePath, file);
       promises.push(fetchPromise);
     }
 

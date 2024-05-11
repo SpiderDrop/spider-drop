@@ -2,7 +2,7 @@ import { Router } from "express";
 import { getSpiderShareList, insertSpiderSharedWith, isInSpiderShareList, revokeAllSpiderSharedList } from "./db/shared-spiders.js";
 import { withTransaction } from "../core/db.js";
 import { sendSpiderShared } from "./emails/senders.js";
-import { deleteObject, putObject, getSignedUrl, listObjects } from "../core/s3.js";
+import { deleteObject, getSignedDownloadUrl, listObjects, getSignedUploadUrl } from "../core/s3.js";
 import { delay, getKeyMiddleware, getObjectKey, MAX_SPIDERS_PER_BOX, ONE_SECOND_IN_MILLIS } from "./_shared.js";
 
 export const spidersRouter = Router();
@@ -31,9 +31,25 @@ spidersRouter.get("/preview-url/*", async (req, res) => {
   }
 
   if (spiderAbsoluteKey) {
-    const url = await getSignedUrl(
+    const url = await getSignedDownloadUrl(
       spiderAbsoluteKey,
       parseInt(process.env.PREVIEW_URL_LIFETIME_SECONDS)
+    );
+    res.status(200).json({ url });
+  }
+});
+
+spidersRouter.get("/upload-url/*", async (req, res) => {
+  const key = res.locals.key.replace("upload-url/", "");
+
+  if (key.length === 0) {
+    res.status(400).json({ message: "Cannot create an unnamed spider." });
+  } else {
+    const newObjectKey = getObjectKey(res.locals.email, `/${key}`);
+
+    const url = await getSignedUploadUrl(
+      newObjectKey,
+      parseInt(process.env.UPLOAD_URL_LIFETIME_SECONDS || 180)
     );
     res.status(200).json({ url });
   }
@@ -68,27 +84,6 @@ spidersRouter.put("/share-list/*", async (req, res) => {
 
       res.status(200).json(shareList);
     });
-  }
-});
-
-spidersRouter.put("/*", async (req, res) => {
-  if (res.locals.key.length === 0) {
-    res.status(400).json({ message: "Cannot create an unnamed spider." });
-  } else {
-    const newObjectKey = getObjectKey(res.locals.email, `/${res.locals.key}`);
-    await putObject(
-      req.body,
-      newObjectKey
-    );
-
-    // It may take a second or 2 for the object to show up in the listing of objects.
-    let objects = (await listObjects(MAX_SPIDERS_PER_BOX)).Contents;
-    while (!objects.some((obj) => obj.Key === newObjectKey)) {
-      await delay(ONE_SECOND_IN_MILLIS);
-      objects = (await listObjects(MAX_SPIDERS_PER_BOX)).Contents;
-    }
-
-    res.status(201).send();
   }
 });
 

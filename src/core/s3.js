@@ -59,11 +59,20 @@ export const deleteObject = async key => {
   return response;
 };
 
-export const getSignedUrl = async (key, expiresIn) => {
+export const getSignedDownloadUrl = async (key, expiresIn) => {
   const params = {
     Key: key,
     Bucket: process.env.AWS_BUCKET_NAME,
   };
   const command = new GetObjectCommand(params);
+  return s3GetSignedUrl(s3Client, command, { expiresIn });
+};
+
+export const getSignedUploadUrl = async (key, expiresIn) => {
+  const params = {
+    Key: key,
+    Bucket: process.env.AWS_BUCKET_NAME,
+  };
+  const command = new PutObjectCommand(params);
   return s3GetSignedUrl(s3Client, command, { expiresIn });
 };

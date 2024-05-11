@@ -92,12 +92,24 @@ export async function getShareList(path) {
 }
 
 export async function uploadFiles(path, fileBlob) {
-  return fetch("/api/spiders/" + path, {
+  const uploadUrl = await getUploadUrl(path);
+  return fetch(uploadUrl.url, {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${token}`,
       "Content-Type": "application/octet-stream"
     },
     body: fileBlob
   });
+}
+
+export async function getUploadUrl(path) {
+  const response = await fetch(`/api/spiders/upload-url/${path}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
 }
