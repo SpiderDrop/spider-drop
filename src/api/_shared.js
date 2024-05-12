@@ -7,23 +7,25 @@ export function getObjectKey(userEmail, suffix) {
   return `${process.env.AWS_BUCKET_PREFIX}${userEmail.toLowerCase()}${suffix}`;
 }
 
+const BoxOrSpiderIsNotRootDir = (boxOrSpider, rootDir) => {
+  return boxOrSpider.Key.startsWith(rootDir) && boxOrSpider.Key !== rootDir;
+};
+
 export async function mapSpiders(objects, prefix, recursive = false) {
   const filter = recursive
-    ? object => object.Key.startsWith(prefix) && object.Key !== prefix
-    : object => {
-        const units = object.Key.replace(prefix, "").split("/");
-        return (
-          object.Key.startsWith(prefix) &&
-          object.Key !== prefix &&
-          (units.length === 1 || units[1] === "")
-        );
+    ? (object) => BoxOrSpiderIsNotRootDir(object, prefix)
+    : (object) => {
+        const units = object.Key.replace(prefix, "").split("/"); //List of boxes and spiders without root directory
+        return (object) =>
+          BoxOrSpiderIsNotRootDir(object, prefix) &&
+          (units.length === 1 || units[1] === "");
       };
 
-  const promises =  objects.filter(filter).map(async (object) => {
+  const promises = objects.filter(filter).map(async (object) => {
     const pathUnits = object.Key.split("/");
     const isBox = object.Key.endsWith("/");
-    if(isBox) {
-      const objects = (await listObjects(MAX_SPIDERS_PER_BOX)).Contents;
+    if (isBox) {
+      const objects = (await listObjects(MAX_SPIDERS_PER_BOX, object.Key)).Contents;
       const children = await mapSpiders(objects, object.Key);
       object.Size = children.length;
     } else {
@@ -41,7 +43,7 @@ export async function mapSpiders(objects, prefix, recursive = false) {
     };
   });
 
-  return Promise.all(promises);
+  return Promise.allSettled(promises);
 }
 
 export async function getKeyMiddleware(req, res, next) {
@@ -50,5 +52,5 @@ export async function getKeyMiddleware(req, res, next) {
 }
 
 export function delay(ms) {
-  return new Promise(resolve => setTimeout(() => resolve(x), ms));
-};
+  return new Promise((resolve) => setTimeout(() => resolve(x), ms));
+}

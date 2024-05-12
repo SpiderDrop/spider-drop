@@ -7,10 +7,14 @@ export const boxesRouter = Router();
 boxesRouter.use(getKeyMiddleware);
 
 boxesRouter.get("/*", async (_req, res) => {
-  const objects = (await listObjects(MAX_SPIDERS_PER_BOX)).Contents;
   const suffix = res.locals.key.length === 0 ? "/" : `/${res.locals.key}/`;
   const prefix = getObjectKey(res.locals.email, suffix);
-  res.status(200).send(await mapSpiders(objects, prefix));
+  const objects = (await listObjects(MAX_SPIDERS_PER_BOX, prefix)).Contents;
+  const boxesAndSpiders = [];
+  (await mapSpiders(objects, prefix)).forEach(object=>{
+    if(object.status === 'fulfilled') boxesAndSpiders.push(object.value);
+  })
+  res.status(200).send(boxesAndSpiders);
 });
 
 boxesRouter.post("/*", async (_req, res) => {
