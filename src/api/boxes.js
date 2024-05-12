@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { deleteObject, listObjects, putObject } from "../core/s3.js";
-import { mapSpiders, getObjectKey, getKeyMiddleware, MAX_SPIDERS_PER_BOX } from "./_shared.js";
+import { mapSpiders, getObjectKey, getKeyMiddleware, MAX_SPIDERS_PER_BOX } from "./shared/shared.js";
 
 export const boxesRouter = Router();
 

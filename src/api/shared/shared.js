@@ -1,4 +1,4 @@
-import { listObjects } from "../core/s3.js";
+import { listObjects } from "../../core/s3.js";
 
 export const ONE_SECOND_IN_MILLIS = 1_000;
 export const MAX_SPIDERS_PER_BOX = 1_000_000;

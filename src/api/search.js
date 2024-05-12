@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { mapSpiders, getObjectKey, getKeyMiddleware } from "./_shared.js";
+import { mapSpiders, getObjectKey, getKeyMiddleware } from "./shared/shared.js";
 import { listObjects } from "../core/s3.js";
 
 export const searchObjectRouter = Router();
