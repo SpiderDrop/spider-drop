@@ -3,32 +3,38 @@
 <html>
   <head>
     <title>Spider Drop</title>
-    <link rel="stylesheet" href="./core/styling/page-setup.css">
-    <link rel="stylesheet" href="./core/styling/constants.css">
-    <link rel="icon" type="icon" href="/assets/icons/favicon.ico">
+    <link rel="stylesheet" href="./core/styling/page-setup.css" />
+    <link rel="stylesheet" href="./core/styling/constants.css" />
+    <link rel="stylesheet" href="pages/home-page/home-page.css" />
+    <link rel="stylesheet" href="pages/about-page/about-page.css" />
+    <link rel="stylesheet" href="./pages/my-spiders-page/my-spiders-page.css" />
+    <link
+      rel="stylesheet"
+      href="/components/search-header-component/search-header-component.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/components/spider-view-component/spider-view-component.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/components/file-actions-component/file-actions-component.css"
+    />
+    <link rel="icon" type="icon" href="/assets/icons/favicon.ico" />
     <script defer type="module" src="./imports.js"></script>
   </head>
   <body>
     <wc-router>
-      <wc-route
-        path="/"
-        title="Sign In"
-        component="home-page">
-      </wc-route>
-      <wc-route
-        path="/about"
-        title="About us"
-        component="about-page">
+      <wc-route path="/" title="Sign In" component="home-page"> </wc-route>
+      <wc-route path="/about" title="About us" component="about-page">
       </wc-route>
       <wc-route
         path="/my-spiders"
         title="My Spiders"
-        component="my-spiders-page">
+        component="my-spiders-page"
+      >
       </wc-route>
-      <wc-route
-        path="*"
-        title="Not found"
-        component="not-found-page">
+      <wc-route path="*" title="Not found" component="not-found-page">
       </wc-route>
       <wc-outlet></wc-outlet>
     </wc-router>
