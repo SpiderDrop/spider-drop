@@ -16,8 +16,7 @@ export async function mapSpiders(objects, prefix, recursive = false) {
     ? (object) => BoxOrSpiderIsNotRootDir(object, prefix)
     : (object) => {
         const units = object.Key.replace(prefix, "").split("/"); //List of boxes and spiders without root directory
-        return (object) =>
-          BoxOrSpiderIsNotRootDir(object, prefix) &&
+        return BoxOrSpiderIsNotRootDir(object, prefix) &&
           (units.length === 1 || units[1] === "");
       };
 
