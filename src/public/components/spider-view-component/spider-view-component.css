@@ -48,6 +48,12 @@
     }
 }
 
+.listing-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .listing-name:hover {
     text-decoration: underline;
 }
