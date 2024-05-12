@@ -3,7 +3,7 @@ import { getSpiderShareList, insertSpiderSharedWith, isInSpiderShareList, revoke
 import { withTransaction } from "../core/db.js";
 import { sendSpiderShared } from "./emails/senders.js";
 import { deleteObject, getSignedDownloadUrl, listObjects, getSignedUploadUrl } from "../core/s3.js";
-import { delay, getKeyMiddleware, getObjectKey, MAX_SPIDERS_PER_BOX, ONE_SECOND_IN_MILLIS } from "./_shared.js";
+import { delay, getKeyMiddleware, getObjectKey, MAX_SPIDERS_PER_BOX, ONE_SECOND_IN_MILLIS } from "./shared/shared.js";
 
 export const spidersRouter = Router();
 spidersRouter.use(getKeyMiddleware);
