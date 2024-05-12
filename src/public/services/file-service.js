@@ -1,4 +1,4 @@
-import { getAccessToken } from "../../services/auth-service.js";
+import { getAccessToken, deleteAccessToken } from "../../services/auth-service.js";
 
 let token = getAccessToken();
 
@@ -11,7 +11,7 @@ export async function fetchCurrentDirectory(path) {
     }
   });
 
-  return response.json();
+  return asJSonResponse(response);
 }
 
 export async function addBox(path) {
@@ -53,7 +53,7 @@ export async function getPreviewUrl(path) {
     }
   });
 
-  return response.json();
+  return asJSonResponse(response);
 }
 
 export async function getSharedSpiderPreviewUrl(key) {
@@ -65,7 +65,7 @@ export async function getSharedSpiderPreviewUrl(key) {
     },
   });
 
-  return response.json();
+  return asJSonResponse(response);
 }
 
 export async function setShareList(path, shareList) {
@@ -88,7 +88,7 @@ export async function getShareList(path) {
     },
   });
 
-  return response.json();
+  return asJSonResponse(response);
 }
 
 export async function uploadFiles(path, fileBlob) {
@@ -111,5 +111,15 @@ export async function getUploadUrl(path) {
     },
   });
 
-  return response.json();
+  return asJSonResponse(response);
+}
+
+async function asJSonResponse(response) {
+  const json = await response.json();
+  if(response.status === 403 && json.message === "jwt expired") {
+    deleteAccessToken();
+    location.assign("/");
+  }
+
+  return json;
 }
