@@ -1,13 +1,15 @@
 import { addBox, uploadFiles } from "../../services/file-service.js";
 
 export default class FileActionsComponent extends HTMLElement {
-  static observedAttributes = [ "latest-path" ];
+  static observedAttributes = [ "latest-path", "hide-file-actions" ];
 
   constructor() {
     super();
     this.showingFolderInput = false;
     this.navigationDepth = 1;
     this.navigationPath = ["/"];
+    this.showingFileActions = true;
+    this.uploadingFile = false;
   }
 
   attributeChangedCallback(property, oldValue, newValue) {
@@ -15,6 +17,21 @@ export default class FileActionsComponent extends HTMLElement {
       this.navigationPath.push(newValue);
       this.navigationDepth += 1;
       this.onUpdatedPath();
+    }
+
+    if (property === "hide-file-actions") {
+        this.toggleFileActions();
+    }
+  }
+
+  toggleFileActions() {
+    this.showingFileActions = !this.showingFileActions;
+    const iconsContainer = this.shadowRoot.querySelector(".icons");
+
+    if (!this.showingFileActions) {
+      iconsContainer.style.visibility = "hidden";
+    } else {
+      iconsContainer.style.visibility = "visible";
     }
   }
 
@@ -107,14 +124,28 @@ export default class FileActionsComponent extends HTMLElement {
     }
   }
 
+  toggleSpiderViewLoading() {
+    this.uploadingFile = !this.uploadingFile;
+
+    const loadingEvent = new CustomEvent("loading", {
+      bubbles: true,
+      composed: true,
+      cancelable: true,
+      detail: this.uploadingFile
+    });
+
+    this.toggleFileActions();
+    this.dispatchEvent(loadingEvent);
+  }
+
   refreshView() {
-    const uploadedFileEvent = new Event("refresh", {
+    const refreshViewEvent = new Event("refresh", {
       composed: true,
       bubbles: true,
       cancelable: true
     });
 
-    this.dispatchEvent(uploadedFileEvent);
+    this.dispatchEvent(refreshViewEvent);
   }
 
   async onUploadFile() {
@@ -123,6 +154,7 @@ export default class FileActionsComponent extends HTMLElement {
     );
 
     uploadFileDialog.disabled = true;
+    this.toggleSpiderViewLoading();
     document.body.style.cursor = "wait";
     
     let uploadedFiles = Array.from(uploadFileDialog.files);
@@ -144,6 +176,7 @@ export default class FileActionsComponent extends HTMLElement {
 
     uploadFileDialog.disabled = false;
     document.body.style.cursor = "pointer"
+    this.toggleSpiderViewLoading();
     this.refreshView();
   }
 

@@ -2,7 +2,7 @@ import { fetchCurrentDirectory, getPreviewUrl, deleteBox, deleteSpider, setShare
 import { getFileType } from "../../services/file-types-service.js";
 
 export default class SpiderViewComponent extends HTMLElement {
-  static observedAttributes = ["refresh", "offset", "files-added"];
+  static observedAttributes = ["refresh", "offset", "files-added", "loading"];
 
   constructor() {
     super();
@@ -24,6 +24,14 @@ export default class SpiderViewComponent extends HTMLElement {
 
     if (name === "offset") {
       this.navigateBackDirectories(Number(newValue));
+    }
+
+    if (name === "loading") {
+      if (newValue === "true") {
+        this.showLoading();
+      } else {
+        this.loadCurrentView();
+      }
     }
   }
 
@@ -262,6 +270,10 @@ export default class SpiderViewComponent extends HTMLElement {
 
     const entryTemplate = this.shadowRoot.getElementById("row-entry");
     const headings = entryTemplate.content.cloneNode(true);
+
+    for (let child of headings.children) {
+      child.classList.add("table-column");
+    }
 
     headings.querySelector("slot[name='name']").append("Name");
     headings.querySelector("slot[name='modified']").append("Modified");
