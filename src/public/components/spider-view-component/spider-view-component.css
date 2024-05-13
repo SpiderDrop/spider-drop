@@ -16,7 +16,7 @@
     container: container / inline-size;
     background-color: var(--light-white);
     border-radius: 1.125rem;
-    padding: 0.25rem 1rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -32,6 +32,10 @@
     align-self: center;
 }
 
+.table-column {
+    font-weight: 500;
+}
+
 .table-row {
     display: grid;
     gap: 1rem;
@@ -40,7 +44,7 @@
     align-items: center;
 
     p {
-        margin: 2px;
+        margin: 0.625rem 0;
     }
 
     :hover {

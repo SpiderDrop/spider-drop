@@ -16,6 +16,11 @@ export default class MySpidersPage extends HTMLElement {
     spiderViewElement.setAttribute("refresh", "true");
   }
 
+  setSpiderViewLoading(isLoading) {
+    const spiderViewElement = this.shadowRoot.querySelector("spider-view");
+    spiderViewElement.setAttribute("loading", isLoading.toString());
+  }
+
   connectedCallback() {
     if (getAccessToken()) {
       const shadow = this.attachShadow({ mode: "open" });
@@ -41,6 +46,11 @@ export default class MySpidersPage extends HTMLElement {
 
       shadow.addEventListener("folderEntered", (event) => {
         this.navigateForward(event.detail.folderName);
+        event.stopPropagation();
+      });
+
+      shadow.addEventListener("loading", (event) => {
+        this.setSpiderViewLoading(event.detail);
         event.stopPropagation();
       });
     } else {
